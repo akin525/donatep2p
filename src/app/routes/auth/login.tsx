@@ -2,6 +2,8 @@ import type React from "react";
 import { useState } from "react";
 import { Link } from "react-router";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
+import {toast} from "sonner";
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,11 +11,48 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // Handle login logic here
+  //   console.log({ email, password, rememberMe });
+  //   window.location.href = "/dashboard";
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log({ email, password, rememberMe });
-    window.location.href = "/dashboard";
+
+    try {
+      const response = await fetch(`${baseUrl}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+      if (data.status==true) {
+        const token = data.token;
+
+        if (rememberMe) {
+          localStorage.setItem("authToken", token);
+        } else {
+          sessionStorage.setItem("authToken", token);
+        }
+
+        toast.success(data.message || "Login successful");
+        window.location.href = "/dashboard";
+      }else {
+        toast.error(data.message || "Login Fail");
+
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Login failed. Please try again.");
+    }
   };
 
   return (
