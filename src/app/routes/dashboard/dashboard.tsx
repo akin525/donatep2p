@@ -145,25 +145,6 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              {/* <div className="flex-1 flex justify-center lg:justify-end">
-                <div className="w-full max-w-lg lg:max-w-xs">
-                  <label htmlFor="search" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative text-gray-400 focus-within:text-gray-600">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-5 w-5" />
-                    </div>
-                    <input
-                      id="search"
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-md leading-5 bg-[#0A1128] placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary focus:ring-0 sm:text-sm"
-                      placeholder="Search transactions, wallets..."
-                      type="search"
-                    />
-                  </div>
-                </div>
-              </div> */}
-
               <div className="flex items-center">
                 {/* Notifications dropdown */}
 
