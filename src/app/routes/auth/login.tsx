@@ -2,15 +2,29 @@ import type React from "react";
 import { useState } from "react";
 import { Link } from "react-router";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
-import {toast} from "sonner";
+import { toast } from "react-toastify";
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const getDeviceName = () => {
+  const ua = navigator.userAgent;
+  const platform = navigator.platform;
+  const browser = (() => {
+    if (ua.includes("Firefox")) return "Firefox";
+    if (ua.includes("Chrome")) return "Chrome";
+    if (ua.includes("Safari")) return "Safari";
+    if (ua.includes("Edg")) return "Edge";
+    return "Unknown";
+  })();
 
+  return `${platform} ${browser}`;
+};
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  const device_name=getDeviceName();
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
   //   // Handle login logic here
@@ -20,41 +34,43 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const response = await fetch(`${baseUrl}/auth/login`, {
+      const response = await fetch(`${baseUrl}login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, device_name }),
       });
 
       const data = await response.json();
 
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
-      if (data.status==true) {
+
+
+      if (response.ok && data.success === true) {
         const token = data.token;
 
-        if (rememberMe) {
-          localStorage.setItem("authToken", token);
-        } else {
-          sessionStorage.setItem("authToken", token);
-        }
+        rememberMe
+            ? localStorage.setItem("authToken", token)
+            : sessionStorage.setItem("authToken", token);
 
         toast.success(data.message || "Login successful");
         window.location.href = "/dashboard";
-      }else {
-        toast.error(data.message || "Login Fail");
-
+      } else {
+        toast.error(data.message || "Login failed");
       }
     } catch (error: any) {
       toast.error(error.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#050A1A] flex flex-col">
       <div className="container mx-auto px-4 py-4">
@@ -92,50 +108,50 @@ export default function LoginPage() {
                   Email Address
                 </label>
                 <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 bg-[#0A1128] border border-gray-700 rounded-lg focus:outline-none focus:border-primary text-white"
-                  placeholder="Enter your email"
-                  required
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-[#0A1128] border border-gray-700 rounded-lg focus:outline-none focus:border-primary text-white"
+                    placeholder="Enter your email"
+                    required
                 />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <label
-                    htmlFor="password"
-                    className="block text-sm font-medium"
+                      htmlFor="password"
+                      className="block text-sm font-medium"
                   >
                     Password
                   </label>
                   <Link
-                    to="/forgot-password"
-                    className="text-sm text-primary hover:underline"
+                      to="/forgot-password"
+                      className="text-sm text-primary hover:underline"
                   >
                     Forgot password?
                   </Link>
                 </div>
                 <div className="relative">
                   <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-[#0A1128] border border-gray-700 rounded-lg focus:outline-none focus:border-primary text-white pr-10"
-                    placeholder="Enter your password"
-                    required
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-3 bg-[#0A1128] border border-gray-700 rounded-lg focus:outline-none focus:border-primary text-white pr-10"
+                      placeholder="Enter your password"
+                      required
                   />
                   <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
                   >
                     {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
+                        <EyeOff className="h-5 w-5"/>
                     ) : (
-                      <Eye className="h-5 w-5" />
+                        <Eye className="h-5 w-5"/>
                     )}
                   </button>
                 </div>
@@ -143,25 +159,30 @@ export default function LoginPage() {
 
               <div className="flex items-center">
                 <input
-                  id="remember-me"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-700 bg-[#0A1128] text-primary focus:ring-primary"
+                    id="remember-me"
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-700 bg-[#0A1128] text-primary focus:ring-primary"
                 />
                 <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-300"
+                    htmlFor="remember-me"
+                    className="ml-2 block text-sm text-gray-300"
                 >
                   Remember me
                 </label>
               </div>
 
               <button
-                type="submit"
-                className="w-full bg-primary text-black px-4 py-3 rounded-lg font-medium hover:bg-yellow-500 transition"
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full px-4 py-3 rounded-lg font-medium transition ${
+                      loading
+                          ? "bg-gray-500 cursor-not-allowed"
+                          : "bg-primary hover:bg-yellow-500 text-black"
+                  }`}
               >
-                Sign In
+                {loading ? "Signing in..." : "Sign In"}
               </button>
             </form>
 
@@ -212,7 +233,7 @@ export default function LoginPage() {
           <div className="text-center mt-8">
             <p className="text-gray-400">
               Don&apos;t have an account?{" "}
-              <Link to="/signup" className="text-primary hover:underline">
+              <Link to="/register" className="text-primary hover:underline">
                 Sign up
               </Link>
             </p>

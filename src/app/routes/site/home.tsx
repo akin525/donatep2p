@@ -31,7 +31,7 @@ export function Header() {
       <header className="flex items-center px-5 h-20 fixed top-0 z-50 backdrop-blur-sm w-full">
         <div className="flex items-center justify-between w-full md:container h-full mx-auto">
           <div className="flex items-center">
-            <p className="font-bold text-3xl">tradelink</p>
+            <p className="font-bold text-3xl">DonateP2P</p>
           </div>
 
           <nav className="hidden md:flex items-center gap-6">
@@ -105,7 +105,7 @@ const HeroSection = () => {
               INTRODUCING
             </p>
             <h2 className="font-gothic text-5xl sm:text-7xl md:text-8xl lg:text-[128px] xl:text-[160px] lg:leading-[140px]">
-              TRADE<span className="text-primary font-gothic">LINK</span>
+              Donate<span className="text-primary font-gothic">P2P</span>
             </h2>
             <p className="max-w-4xl text-lg md:text-2xl text-center">
               Trade All Assets Through Peer-To-Peer (P2P) Easier Than Ever
