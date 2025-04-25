@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getAuthToken } from "../utils/auth";
 import { toast } from "react-toastify";
+import Sidebar from "@/components/Sidebar";
+import DashboardHeader from "@/components/DashboardHeader.tsx";
+import {useUser} from "@/context/UserContext.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -11,7 +14,9 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
     const [isValid, setIsValid] = useState<boolean | null>(null);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
+    const { setUser } = useUser();
 
     useEffect(() => {
         const verifyToken = async () => {
@@ -40,6 +45,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                     }
 
                     if (data.success === true) {
+                        setUser(data.data.user);
                         setIsValid(true);
                         return;
                     }
@@ -58,7 +64,25 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }, [navigate]);
 
     if (isValid === null) {
-        return <div className="text-white text-center py-8">Checking authentication...</div>;
+        return (
+            <div className="min-h-screen text-white flex bg-[#050B1E]">
+                {sidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+                        onClick={() => setSidebarOpen(false)}
+                    ></div>
+                )}
+                <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+                <div className="flex-1 flex flex-col overflow-hidden">
+                    <DashboardHeader setSidebarOpen={setSidebarOpen} />
+
+                    {/* Loader */}
+                    <div className="flex-1 flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-yellow-500"></div>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return <>{children}</>;

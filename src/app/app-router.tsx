@@ -11,6 +11,8 @@ import P2p from "./routes/dashboard/p2p";
 import { ProtectedRoute } from "./../components/ProtectedRoute";
 import VerifyTelegram from "@/app/routes/dashboard/verify-telegram.tsx";
 import VerifyOtpPage from "@/app/routes/dashboard/verify-otp.tsx";
+import BidAskHistory from "@/app/routes/dashboard/BidAskHistory.tsx";
+import AskPage from "@/app/routes/dashboard/ask.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +70,24 @@ export const router = createBrowserRouter([
   {
     path: "/verify-otp",
     Component: VerifyOtpPage,
+  },
+  {
+
+    path: "/history",
+    Component: () => (
+        <ProtectedRoute>
+          <BidAskHistory/>
+        </ProtectedRoute>
+    ),
+  },
+  {
+
+    path: "/ask",
+    Component: () => (
+        <ProtectedRoute>
+          <AskPage/>
+        </ProtectedRoute>
+    ),
   },
 ]);
 export function AppRouter() {

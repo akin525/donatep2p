@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import {getAuthToken} from "@/utils/auth.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -8,6 +9,7 @@ export default function VerifyOtpPage() {
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const token = getAuthToken();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,6 +19,7 @@ export default function VerifyOtpPage() {
             const response = await fetch(`${baseUrl}verify-telegram-otp`, {
                 method: "POST",
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ otp }),

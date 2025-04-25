@@ -2,10 +2,20 @@ import { useState } from "react";
 import Sidebar from "../../../components/Sidebar";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { Link } from "react-router";
-import { DollarSign, TrendingUp, Activity, ArrowRightLeft, HandHeart, HandCoins } from "lucide-react";
+import { DollarSign, TrendingUp, Activity, ArrowRightLeft, HandHeart, HandCoins, Copy } from "lucide-react";
+import { useUser } from "@/context/UserContext.tsx";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { user } = useUser();
+
+    const handleCopyReferral = () => {
+        if (user?.ref_code) {
+            navigator.clipboard.writeText(user.ref_code);
+            toast.success("Referral code copied to clipboard!");
+        }
+    };
 
     return (
         <div className="min-h-screen text-white flex bg-[#050B1E]">
@@ -25,45 +35,41 @@ export default function Dashboard() {
                     <div className="py-8">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             {/* Welcome message */}
-                            <h1 className="text-3xl font-bold text-white mb-4">Welcome back, Trader!</h1>
+                            <h1 className="text-3xl font-bold text-white mb-4">Welcome back, {user?.firstname}!</h1>
                             <p className="text-gray-400 mb-8">Here’s what’s happening with your account today.</p>
 
-                            {/* Balance card */}
+                            {/* Main cards */}
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {/* Balance & Earnings */}
                                 <div className="bg-gradient-to-br from-[#0A1128] to-[#1A1F3D] rounded-xl p-6 border border-gray-800 shadow-xl hover:shadow-2xl transition-shadow">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="bg-primary/10 p-3 rounded-full">
-                                                <DollarSign className="text-primary w-6 h-6" />
-                                            </div>
-                                            <div>
-                                                <p className="text-sm text-gray-400">USDT Balance</p>
-                                                <h2 className="text-2xl font-semibold text-white">5,230.75 USDT</h2>
-                                            </div>
-                                        </div>
+                                    <div className="mb-4">
+                                        <p className="text-sm text-gray-400">USDT Balance</p>
+                                        <h2 className="text-2xl font-semibold text-white">{user?.balance || "0"} USDT</h2>
+                                    </div>
+                                    <div className="mb-4">
+                                        <p className="text-sm text-gray-400">Total Earnings</p>
+                                        <h2 className="text-2xl font-semibold text-green-400">{user?.earning || "0"} USDT</h2>
                                     </div>
                                     <Link to="/dashboard/wallet/usdt" className="text-primary hover:text-yellow-500 text-sm font-medium">
                                         View Wallet
                                     </Link>
                                 </div>
 
-                                {/* Recent Activity */}
+                                {/* Referral Code */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                                        <Activity className="text-gray-400 w-5 h-5" />
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h3 className="text-lg font-semibold text-white">Referral Code</h3>
+                                        <button
+                                            onClick={handleCopyReferral}
+                                            className="text-gray-300 hover:text-white transition"
+                                            title="Copy code"
+                                        >
+                                            <Copy className="w-5 h-5" />
+                                        </button>
                                     </div>
-                                    <ul className="space-y-3 text-sm text-gray-400">
-                                        <li>
-                                            Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span>
-                                        </li>
-                                        <li>
-                                            Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span>
-                                        </li>
-                                        <li>
-                                            Received 200 USDT — <span className="text-green-400">+$200</span>
-                                        </li>
-                                    </ul>
+                                    <div className="text-white bg-[#1A1F3D] px-4 py-2 rounded-md font-mono text-center">
+                                        {user?.ref_code || "N/A"}
+                                    </div>
                                 </div>
 
                                 {/* Market Summary */}
@@ -80,7 +86,22 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            {/* Quick actions */}
+                            {/* Recent Activity */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                                <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
+                                        <Activity className="text-gray-400 w-5 h-5" />
+                                    </div>
+                                    <ul className="space-y-3 text-sm text-gray-400">
+                                        <li>Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span></li>
+                                        <li>Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span></li>
+                                        <li>Received 200 USDT — <span className="text-green-400">+$200</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* Quick Actions */}
                             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <button className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
                                     <span>Send USDT</span>
@@ -96,26 +117,44 @@ export default function Dashboard() {
                                 </button>
                             </div>
 
-                            {/* P2P Donations - Bid and Ask Section */}
+                            {/* P2P Donations */}
                             <div className="mt-12">
                                 <h2 className="text-2xl font-semibold text-white mb-4">P2P Donations</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow">
+                                    {/* Bid Card */}
+                                    <div
+                                        className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
                                         <div className="flex items-center justify-between mb-2">
                                             <h3 className="text-lg font-medium text-white">Bid for Donation</h3>
-                                            <HandHeart className="text-pink-400 w-5 h-5" />
+                                            <HandHeart className="text-pink-400 w-5 h-5"/>
                                         </div>
-                                        <p className="text-sm text-gray-400 mb-3">Request help or support from the community using USDT.</p>
-                                        <button className="w-full py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition">Create Bid</button>
+                                        <p className="text-sm text-gray-400 mb-4">
+                                            Request help or support from the community using USDT.
+                                        </p>
+                                        <Link
+                                            to="/bid"
+                                            className="block w-full text-center py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition"
+                                        >
+                                            Create Bid
+                                        </Link>
                                     </div>
 
-                                    <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow">
+                                    {/* Ask Card */}
+                                    <div
+                                        className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
                                         <div className="flex items-center justify-between mb-2">
                                             <h3 className="text-lg font-medium text-white">Ask to Donate</h3>
-                                            <HandCoins className="text-green-400 w-5 h-5" />
+                                            <HandCoins className="text-green-400 w-5 h-5"/>
                                         </div>
-                                        <p className="text-sm text-gray-400 mb-3">Donate to active community bids and support users in need.</p>
-                                        <button className="w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">View Requests</button>
+                                        <p className="text-sm text-gray-400 mb-4">
+                                            Donate to active community bids and support users in need.
+                                        </p>
+                                        <Link
+                                            to="/ask"
+                                            className="block w-full text-center py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                                        >
+                                            View Requests
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

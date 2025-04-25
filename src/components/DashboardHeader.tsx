@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Menu, ChevronDown, Search } from "lucide-react";
+import {useUser} from "@/context/UserContext.tsx";
 
 export default function DashboardHeader({
   setSidebarOpen,
@@ -8,6 +9,7 @@ export default function DashboardHeader({
   setSidebarOpen: (open: boolean) => void;
 }) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const { user } = useUser();
 
   return (
     <header className="border-b border-gray-800">
@@ -55,7 +57,7 @@ export default function DashboardHeader({
                   x
                 </div>
                 <span className="ml-2 text-sm font-medium hidden sm:block">
-                  John Doe
+                  {user?.firstname} {user?.lastname}
                 </span>
                 <ChevronDown className="ml-1 h-4 w-4 text-gray-400 hidden sm:block" />
               </button>
