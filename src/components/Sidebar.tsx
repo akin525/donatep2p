@@ -12,7 +12,6 @@ import {
   MessageSquare,
   LogOut,
 } from "lucide-react";
-import BidAskHistory from "@/app/routes/dashboard/BidAskHistory.tsx";
 
 export default function Sidebar({
   isOpen,
