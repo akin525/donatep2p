@@ -66,14 +66,14 @@ export default function DashboardHeader({
                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-[#0A1128] ring-1 ring-black ring-opacity-5 z-50">
                   <div className="py-1" role="menu" aria-orientation="vertical">
                     <Link
-                      to="/dashboard/profile"
+                      to="/profile"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#070D20] hover:text-white"
                       role="menuitem"
                     >
                       Your Profile
                     </Link>
                     <Link
-                      to="/dashboard/settings"
+                      to="/settings"
                       className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#070D20] hover:text-white"
                       role="menuitem"
                     >

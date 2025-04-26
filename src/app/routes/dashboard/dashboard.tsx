@@ -56,6 +56,7 @@ export default function Dashboard() {
                                 </div>
 
                                 {/* Referral Code */}
+                                {/* Referral Code */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
                                     <div className="flex justify-between items-center mb-3">
                                         <h3 className="text-lg font-semibold text-white">Referral Code</h3>
@@ -67,10 +68,30 @@ export default function Dashboard() {
                                             <Copy className="w-5 h-5" />
                                         </button>
                                     </div>
-                                    <div className="text-white bg-[#1A1F3D] px-4 py-2 rounded-md font-mono text-center">
+                                    <div className="text-white bg-[#1A1F3D] px-4 py-2 rounded-md font-mono text-center mb-2">
                                         {user?.ref_code || "N/A"}
                                     </div>
+
+                                    <div className="flex justify-between items-center mb-1">
+                                        <p className="text-sm text-gray-400">Referral Link</p>
+                                        <button
+                                            onClick={() => {
+                                                if (user?.ref_code) {
+                                                    navigator.clipboard.writeText(`https://yourapp.com/register?ref=${user.ref_code}`);
+                                                    toast.success("Referral link copied to clipboard!");
+                                                }
+                                            }}
+                                            className="text-gray-300 hover:text-white transition"
+                                            title="Copy link"
+                                        >
+                                            <Copy className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                    <div className="text-white bg-[#1A1F3D] px-4 py-2 rounded-md font-mono text-center text-sm break-all">
+                                        {user?.ref_code ? `https://yourapp.com/register?ref=${user.ref_code}` : "N/A"}
+                                    </div>
                                 </div>
+
 
                                 {/* Market Summary */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
@@ -86,20 +107,6 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            {/* Recent Activity */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-                                <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                                        <Activity className="text-gray-400 w-5 h-5" />
-                                    </div>
-                                    <ul className="space-y-3 text-sm text-gray-400">
-                                        <li>Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span></li>
-                                        <li>Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span></li>
-                                        <li>Received 200 USDT — <span className="text-green-400">+$200</span></li>
-                                    </ul>
-                                </div>
-                            </div>
 
                             {/* Quick Actions */}
                             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -158,6 +165,38 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                             </div>
+
+
+                            {/* Recent Activities (Ask + Bid) */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-10">
+                                {/* Recent Ask Activity */}
+                                <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-semibold text-white">Recent Ask Activity</h3>
+                                        <Activity className="text-gray-400 w-5 h-5" />
+                                    </div>
+                                    <ul className="space-y-3 text-sm text-gray-400">
+                                        <li>Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span></li>
+                                        <li>Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span></li>
+                                        <li>Received 200 USDT — <span className="text-green-400">+$200</span></li>
+                                    </ul>
+                                </div>
+
+                                {/* Recent Bid Activity */}
+                                <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-semibold text-white">Recent Bid Activity</h3>
+                                        <Activity className="text-gray-400 w-5 h-5" />
+                                    </div>
+                                    <ul className="space-y-3 text-sm text-gray-400">
+                                        <li>Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span></li>
+                                        <li>Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span></li>
+                                        <li>Received 200 USDT — <span className="text-green-400">+$200</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
 
                         </div>
                     </div>

@@ -1,143 +1,89 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import {
-  X,
-  LayoutDashboard,
-  Wallet,
-  CreditCard,
-  PieChart,
-  Users,
-  User,
-  Settings,
-  MessageSquare,
-  LogOut,
-} from "lucide-react";
+import { useState } from "react";
+import DashboardHeader from "@/components/DashboardHeader";
+import Sidebar from "@/components/Sidebar";
+import { Copy } from "lucide-react";
+import { toast } from "react-toastify";
 
-export default function Sidebar({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const [sidebarOpen, setSidebarOpen] = useState(isOpen);
+export default function SupportPage() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    setSidebarOpen(isOpen);
-  }, [isOpen]);
+  const telegramLinks = {
+    channel: "https://t.me/yourchannel", // Replace with your real Telegram Channel link
+    group: "https://t.me/yourgroup",     // Replace with your real Telegram Group link
+  };
+
+  const handleCopy = (link: string) => {
+    navigator.clipboard.writeText(link);
+    toast.success("Link copied to clipboard!");
+  };
 
   return (
-    <>
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
-          onClick={onClose}
-        ></div>
-      )}
+      <div className="min-h-screen bg-[#050B1E] text-white flex">
+        {sidebarOpen && (
+            <div
+                className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
+                onClick={() => setSidebarOpen(false)}
+            />
+        )}
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <aside
-        className={`fixed inset-y-0 left-0 z-30 w-64 transform border-r transition-transform duration-300 ease-in-out bg-[#0A1128] lg:translate-x-0 lg:static lg:inset-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-800">
-          <Link to="/" className="flex items-center">
-            <p className="font-bold text-3xl">tradelink</p>
-          </Link>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="p-1 rounded-md text-gray-400 hover:text-white lg:hidden"
-          >
-            <X size={20} />
-          </button>
-        </div>
+        <div className="flex-1 flex flex-col">
+          <DashboardHeader setSidebarOpen={setSidebarOpen} />
 
-        <div className="px-3 py-4">
-          <div className="space-y-1">
-            <Link
-              to="/dashboard"
-              className="flex items-center px-3 py-2 text-sm font-medium rounded-md bg-[#0A1128] text-white"
-            >
-              <LayoutDashboard className="mr-3 h-5 w-5 text-primary" />
-              Dashboard
-            </Link>
-            <Link
-              to="/wallet"
-              className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-            >
-              <Wallet className="mr-3 h-5 w-5 text-gray-400" />
-              Wallet
-            </Link>
-            <Link
-              to="/history"
-              className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-            >
-              <CreditCard className="mr-3 h-5 w-5 text-gray-400" />
-              BidAsk-History
-            </Link>
-            <Link
-              to="/ask"
-              className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-            >
-              <PieChart className="mr-3 h-5 w-5 text-gray-400" />
-              Ask
-            </Link>
-            <Link
-              to="/bid"
-              className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-            >
-              <PieChart className="mr-3 h-5 w-5 text-gray-400" />
-              Bid
-            </Link>
-            <Link
-              to="/p2p"
-              className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-            >
-              <Users className="mr-3 h-5 w-5 text-gray-400" />
-              P2P Trading
-            </Link>
-          </div>
+          <main className="flex-1 overflow-y-auto py-10 px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <h1 className="text-2xl font-bold mb-6">Support</h1>
 
-          <div className="mt-8">
-            <h3 className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              Account
-            </h3>
-            <div className="mt-2 space-y-1">
-              <Link
-                to="/dashboard/profile"
-                className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-              >
-                <User className="mr-3 h-5 w-5 text-gray-400" />
-                Profile
-              </Link>
-              <Link
-                to="/dashboard/settings"
-                className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-              >
-                <Settings className="mr-3 h-5 w-5 text-gray-400" />
-                Settings
-              </Link>
-              <Link
-                to="/dashboard/support"
-                className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-              >
-                <MessageSquare className="mr-3 h-5 w-5 text-gray-400" />
-                Support
-              </Link>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Telegram Channel Card */}
+                <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
+                  <h3 className="text-lg font-medium text-white mb-2">Telegram Channel</h3>
+                  <p className="text-gray-400 text-sm mb-4">
+                    Stay updated with the latest news and announcements!
+                  </p>
+                  <a
+                      href={telegramLinks.channel}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-center py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition"
+                  >
+                    Join Channel
+                  </a>
+                  <button
+                      onClick={() => handleCopy(telegramLinks.channel)}
+                      className="flex items-center justify-center mt-3 w-full text-sm text-gray-400 hover:text-white"
+                  >
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copy Channel Link
+                  </button>
+                </div>
+
+                {/* Telegram Group Card */}
+                <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
+                  <h3 className="text-lg font-medium text-white mb-2">Telegram General Group</h3>
+                  <p className="text-gray-400 text-sm mb-4">
+                    Chat, ask questions, and connect with the community!
+                  </p>
+                  <a
+                      href={telegramLinks.group}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-center py-2 bg-green-600 hover:bg-green-700 rounded-lg transition"
+                  >
+                    Join Group
+                  </a>
+                  <button
+                      onClick={() => handleCopy(telegramLinks.group)}
+                      className="flex items-center justify-center mt-3 w-full text-sm text-gray-400 hover:text-white"
+                  >
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copy Group Link
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </main>
         </div>
-
-        <div className="absolute bottom-0 w-full border-t border-gray-800 p-4">
-          <Link
-            to="/login"
-            className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
-          >
-            <LogOut className="mr-3 h-5 w-5 text-gray-400" />
-            Sign Out
-          </Link>
-        </div>
-      </aside>
-    </>
+      </div>
   );
 }

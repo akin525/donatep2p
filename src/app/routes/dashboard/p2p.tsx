@@ -1,10 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { HandCoins, HandHeart } from "lucide-react";
-
+import {getAuthToken} from "@/utils/auth.tsx";
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const token = getAuthToken();
 export default function P2P() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [availableBids, setAvailableBids] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchAvailableBids = async () => {
+            try {
+                const response = await fetch(`${baseUrl}available-bids`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                const data = await response.json();
+                console.log(data);
+                setAvailableBids(data); // adjust based on actual API response structure
+            } catch (error) {
+                console.error("Error fetching available bids:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAvailableBids();
+    }, []);
 
     return (
         <div className="min-h-screen text-white flex bg-[#050B1E]">
@@ -57,6 +82,23 @@ export default function P2P() {
                                 </div>
                             </div>
 
+                            {/* Fetched Available Bids */}
+                            <div className="mt-10">
+                                <h2 className="text-xl font-semibold text-white mb-4">Available Bids</h2>
+                                {loading ? (
+                                    <p className="text-gray-400">Loading...</p>
+                                ) : (
+                                    <ul className="space-y-4">
+                                        {availableBids.map((bid, idx) => (
+                                            <li key={idx} className="p-4 bg-[#0A1128] rounded-lg border border-gray-700">
+                                                <p><strong>Amount:</strong> {bid.amount} USDT</p>
+                                                <p><strong>User:</strong> {bid.username || "Anonymous"}</p>
+                                                <p><strong>Status:</strong> {bid.status}</p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </main>

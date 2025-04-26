@@ -10,6 +10,8 @@ interface User {
   balance: string;
   earning: string;
   telegram_id: string;
+  telegram_verified:1 | 0,
+  email_verified:1 | 0,
   country: string;
   profile_photo_path: string | null;
   ref_code: string;

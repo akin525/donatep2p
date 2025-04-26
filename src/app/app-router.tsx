@@ -13,6 +13,9 @@ import VerifyTelegram from "@/app/routes/dashboard/verify-telegram.tsx";
 import VerifyOtpPage from "@/app/routes/dashboard/verify-otp.tsx";
 import BidAskHistory from "@/app/routes/dashboard/BidAskHistory.tsx";
 import AskPage from "@/app/routes/dashboard/ask.tsx";
+import Settings from "@/app/routes/dashboard/settings.tsx";
+import Profile from "@/app/routes/dashboard/profile.tsx";
+import SupportPage from "@/app/routes/dashboard/support.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -86,6 +89,33 @@ export const router = createBrowserRouter([
     Component: () => (
         <ProtectedRoute>
           <AskPage/>
+        </ProtectedRoute>
+    ),
+  },
+  {
+
+    path: "/settings",
+    Component: () => (
+        <ProtectedRoute>
+          <Settings/>
+        </ProtectedRoute>
+    ),
+  },
+  {
+
+    path: "/profile",
+    Component: () => (
+        <ProtectedRoute>
+          <Profile/>
+        </ProtectedRoute>
+    ),
+  },
+  {
+
+    path: "/support",
+    Component: () => (
+        <ProtectedRoute>
+          <SupportPage/>
         </ProtectedRoute>
     ),
   },
