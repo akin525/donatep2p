@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Link } from "react-router";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { toast } from "react-toastify";
@@ -37,7 +37,13 @@ export default function RegisterPage() {
     agreeTerms: false,
   });
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const referral = searchParams.get("ref");
+    if (referral) {
+      setFormData(prev => ({ ...prev, referralCode: referral }));
+    }
+  }, [location.search]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -136,7 +142,7 @@ export default function RegisterPage() {
                     id: "referralCode",
                     label: "Referral Code (Optional)",
                     type: "text",
-                    placeholder: "Enter referral code"
+                    placeholder: "Enter referral code",
                   },
                 ].map(({id, label, type, placeholder}) => (
                     <div key={id} className="space-y-2">
