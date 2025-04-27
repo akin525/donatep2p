@@ -4,7 +4,7 @@ import { getAuthToken } from "../utils/auth";
 import { toast } from "react-toastify";
 import Sidebar from "@/components/Sidebar";
 import DashboardHeader from "@/components/DashboardHeader.tsx";
-import {useUser} from "@/context/UserContext.tsx";
+import { useUser } from "@/context/UserContext.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -38,6 +38,8 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
                 const data = await response.json();
 
+                console.log(data);
+
                 if (response.ok) {
                     if (data.message === "Telegram Id Verification Required.") {
                         navigate("/verify-telegram");
@@ -45,14 +47,19 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                     }
 
                     if (data.success === true) {
-                        setUser(data.data.user);
+                        // Set user, recentBids, and recentAsks
+                        setUser({
+                            ...data.data.user,
+                            recentBids: data.data.recentBids || [],
+                            recentAsks: data.data.recentAsks || [],
+                        });
                         setIsValid(true);
                         return;
                     }
                 }
 
                 throw new Error(data.message || "Unauthorized");
-            } catch (error: any) {
+            } catch (error) {
                 localStorage.removeItem("authToken");
                 sessionStorage.removeItem("authToken");
                 toast.error(error.message || "Session expired. Please login again.");
@@ -84,6 +91,5 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
             </div>
         );
     }
-
     return <>{children}</>;
 }

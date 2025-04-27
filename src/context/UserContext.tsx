@@ -1,5 +1,18 @@
-// context/UserContext.tsx
 import { createContext, useContext, useState } from "react";
+
+interface Transaction {
+  id: number;
+  user_id: number;
+  plan_id: number;
+  amount: string;
+  amount_to_pair: string;
+  paired_amount: string;
+  invest_id: number | null;
+  trx: string;
+  status: "pending" | "completed" | "failed"; // assuming all lowercased
+  created_at: string;
+  updated_at: string;
+}
 
 interface User {
   id: number;
@@ -10,38 +23,44 @@ interface User {
   balance: string;
   earning: string;
   telegram_id: string;
-  telegram_verified:1 | 0,
-  email_verified:1 | 0,
+  telegram_verified: 1 | 0;
+  email_verified: 1 | 0;
   country: string;
   profile_photo_path: string | null;
   ref_code: string;
   referral: string;
   status: string;
   bep_address: string | null;
-  transactions: Array<{
-    description: string;
-    status: "Pending" | "Completed" | "Failed";
-  }>;
-  // Add other fields as needed
+  telegram_otp?: string;
+  online?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  recentBids?: Transaction[];
+  recentAsks?: Transaction[];
+  // You can add more if your backend sends more
 }
 
 interface UserContextType {
   user: User | null;
   setUser: (user: User) => void;
+  siteBot: string | null;
+  setSiteBot: (bot: string) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [siteBot, setSiteBot] = useState<string | null>(null);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
+      <UserContext.Provider value={{ user, setUser, siteBot, setSiteBot }}>
+        {children}
+      </UserContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) throw new Error("useUser must be used within UserProvider");

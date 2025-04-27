@@ -16,6 +16,8 @@ import AskPage from "@/app/routes/dashboard/ask.tsx";
 import Settings from "@/app/routes/dashboard/settings.tsx";
 import Profile from "@/app/routes/dashboard/profile.tsx";
 import SupportPage from "@/app/routes/dashboard/support.tsx";
+import BidDetail from "@/app/routes/dashboard/BidDetail.tsx";
+import AskDetail from "@/app/routes/dashboard/AskDetail.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -32,11 +34,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    Component: () => (
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-    ),
+      Component: () => (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+      ),
+
   },
   {
     path: "/wallet",
@@ -80,6 +83,24 @@ export const router = createBrowserRouter([
     Component: () => (
         <ProtectedRoute>
           <BidAskHistory/>
+        </ProtectedRoute>
+    ),
+  },
+    {
+
+    path: "/bids/:id",
+    Component: () => (
+        <ProtectedRoute>
+          <BidDetail/>
+        </ProtectedRoute>
+    ),
+  },
+    {
+
+    path: "/asks/:id",
+    Component: () => (
+        <ProtectedRoute>
+          <AskDetail/>
         </ProtectedRoute>
     ),
   },

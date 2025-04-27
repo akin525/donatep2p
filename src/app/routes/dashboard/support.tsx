@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router";
 import { MessageCircle, Send } from "lucide-react";
 import DashboardHeader from "@/components/DashboardHeader";
 import Sidebar from "@/components/Sidebar";

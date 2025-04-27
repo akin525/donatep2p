@@ -3,6 +3,7 @@ import { getAuthToken } from "@/utils/auth";
 import DashboardHeader from "@/components/DashboardHeader";
 import Sidebar from "@/components/Sidebar";
 import { formatDistanceToNow } from "date-fns";
+import {Link} from "react-router";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
@@ -25,8 +26,8 @@ export default function BidAskHistory() {
                 const bidsData = await bidsRes.json();
                 const asksData = await asksRes.json();
 
-                setBids(bidsData.data?.user?.data || []);
-                setAsks(asksData.data?.user?.data || []);
+                setBids(bidsData.data?.data || []);
+                setAsks(asksData.data?.data || []);
             } catch (err) {
                 console.error("Failed to fetch history", err);
             } finally {
@@ -38,19 +39,18 @@ export default function BidAskHistory() {
     }, []);
 
     const renderCard = (item: any, type: "bid" | "ask") => (
-        <div key={item.id} className="p-6 rounded-2xl bg-[#1A202C] border border-[#2D3748] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-            <p className="text-sm text-gray-400">
-                {type === "bid" ? "Bid" : "Ask"} ID: <span className="text-white">{item.id}</span>
-            </p>
-            <p className="text-white font-semibold text-2xl mt-2">{item.amount} USDT</p>
-            <p className="text-gray-400 text-xs mt-2">{formatDistanceToNow(new Date(item.created_at))} ago</p>
-            {/* Additional fields */}
-            <p className="text-gray-400 text-sm mt-2">TRX: <span className="text-white">{item.trx}</span></p>
-            <p className="text-gray-400 text-sm mt-2">Status: <span className={`text-sm font-medium ${item.status === "pending" ? "text-yellow-400" :
-                item.status === "completed" ? "text-green-500" : "text-red-500"}`}>{item.status}</span></p>
-            <p className="text-gray-400 text-sm mt-2">Plan ID: <span className="text-white">{item.plan_id}</span></p>
-            <p className="text-gray-400 text-sm mt-2">Amount to Pair: <span className="text-white">{item.amount_to_pair} USDT</span></p>
-        </div>
+        <Link to={type === "bid" ? `/bids/${item.id}` : `/asks/${item.id}`} key={item.id}>
+            <div className="p-6 rounded-2xl bg-[#1A202C] border border-[#2D3748] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                <p className="text-sm text-gray-400">
+                    {type === "bid" ? "Bid" : "Ask"} ID: <span className="text-white">{item.id}</span>
+                </p>
+                <p className="text-white font-semibold text-2xl mt-2">{item.amount} USDT</p>
+                <p className="text-gray-400 text-xs mt-2">{formatDistanceToNow(new Date(item.created_at))} ago</p>
+                <p className="text-gray-400 text-sm mt-2">TRX: <span className="text-white">{item.trx}</span></p>
+                <p className="text-gray-400 text-sm mt-2">Status: <span className={`text-sm font-medium ${item.status === "pending" ? "text-yellow-400" :
+                    item.status === "completed" ? "text-green-500" : "text-red-500"}`}>{item.status}</span></p>
+            </div>
+        </Link>
     );
 
     return (

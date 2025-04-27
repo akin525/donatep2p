@@ -3,12 +3,12 @@ import Sidebar from "../../../components/Sidebar";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { Link } from "react-router";
 import { DollarSign, TrendingUp, Activity, ArrowRightLeft, HandHeart, HandCoins, Copy } from "lucide-react";
-import { useUser } from "@/context/UserContext.tsx";
+import { useUser } from "@/context/UserContext";
 import { toast } from "react-toastify";
 
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const { user } = useUser();
+    const { user } = useUser() as any;
 
     const handleCopyReferral = () => {
         if (user?.ref_code) {
@@ -56,7 +56,6 @@ export default function Dashboard() {
                                 </div>
 
                                 {/* Referral Code */}
-                                {/* Referral Code */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
                                     <div className="flex justify-between items-center mb-3">
                                         <h3 className="text-lg font-semibold text-white">Referral Code</h3>
@@ -77,7 +76,7 @@ export default function Dashboard() {
                                         <button
                                             onClick={() => {
                                                 if (user?.ref_code) {
-                                                    navigator.clipboard.writeText(`https://yourapp.com/register?ref=${user.ref_code}`);
+                                                    navigator.clipboard.writeText(`https://donate.paymoni.com.ng/register?ref=${user.ref_code}`);
                                                     toast.success("Referral link copied to clipboard!");
                                                 }
                                             }}
@@ -88,12 +87,11 @@ export default function Dashboard() {
                                         </button>
                                     </div>
                                     <div className="text-white bg-[#1A1F3D] px-4 py-2 rounded-md font-mono text-center text-sm break-all">
-                                        {user?.ref_code ? `https://yourapp.com/register?ref=${user.ref_code}` : "N/A"}
+                                        {user?.ref_code ? `https://donate.paymoni.com.ng/register?ref=${user.ref_code}` : "N/A"}
                                     </div>
                                 </div>
 
-
-                                {/* Market Summary */}
+                                {/* Market Trends */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="text-lg font-semibold text-white">Market Trends</h3>
@@ -106,7 +104,6 @@ export default function Dashboard() {
                                     </div>
                                 </div>
                             </div>
-
 
                             {/* Quick Actions */}
                             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -129,11 +126,10 @@ export default function Dashboard() {
                                 <h2 className="text-2xl font-semibold text-white mb-4">P2P Donations</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Bid Card */}
-                                    <div
-                                        className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
+                                    <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
                                         <div className="flex items-center justify-between mb-2">
                                             <h3 className="text-lg font-medium text-white">Bid for Donation</h3>
-                                            <HandHeart className="text-pink-400 w-5 h-5"/>
+                                            <HandHeart className="text-pink-400 w-5 h-5" />
                                         </div>
                                         <p className="text-sm text-gray-400 mb-4">
                                             Request help or support from the community using USDT.
@@ -147,11 +143,10 @@ export default function Dashboard() {
                                     </div>
 
                                     {/* Ask Card */}
-                                    <div
-                                        className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
+                                    <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
                                         <div className="flex items-center justify-between mb-2">
                                             <h3 className="text-lg font-medium text-white">Ask to Donate</h3>
-                                            <HandCoins className="text-green-400 w-5 h-5"/>
+                                            <HandCoins className="text-green-400 w-5 h-5" />
                                         </div>
                                         <p className="text-sm text-gray-400 mb-4">
                                             Donate to active community bids and support users in need.
@@ -166,9 +161,8 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-
-                            {/* Recent Activities (Ask + Bid) */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-10">
+                            {/* Recent Activities */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
                                 {/* Recent Ask Activity */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
                                     <div className="flex items-center justify-between mb-4">
@@ -176,9 +170,18 @@ export default function Dashboard() {
                                         <Activity className="text-gray-400 w-5 h-5" />
                                     </div>
                                     <ul className="space-y-3 text-sm text-gray-400">
-                                        <li>Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span></li>
-                                        <li>Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span></li>
-                                        <li>Received 200 USDT — <span className="text-green-400">+$200</span></li>
+                                        {user?.recentAsks?.length > 0 ? (
+                                            user.recentAsks.map((ask) => (
+                                                <li key={ask.id}>
+                                                    Asked for {ask.amount} USDT —{" "}
+                                                    <span className={ask.status === "pending" ? "text-yellow-300" : "text-green-400"}>
+                                                        {ask.status}
+                                                    </span>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li>No recent ask activity.</li>
+                                        )}
                                     </ul>
                                 </div>
 
@@ -189,14 +192,21 @@ export default function Dashboard() {
                                         <Activity className="text-gray-400 w-5 h-5" />
                                     </div>
                                     <ul className="space-y-3 text-sm text-gray-400">
-                                        <li>Bought 100 USDT @ $1.00 — <span className="text-green-400">+$100</span></li>
-                                        <li>Transferred 50 USDT to Wallet — <span className="text-yellow-300">Pending</span></li>
-                                        <li>Received 200 USDT — <span className="text-green-400">+$200</span></li>
+                                        {user?.recentBids?.length > 0 ? (
+                                            user.recentBids.map((bid) => (
+                                                <li key={bid.id}>
+                                                    Bid {bid.amount} USDT —{" "}
+                                                    <span className={bid.status === "pending" ? "text-yellow-300" : "text-green-400"}>
+                                                        {bid.status}
+                                                    </span>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li>No recent bid activity.</li>
+                                        )}
                                     </ul>
                                 </div>
                             </div>
-
-
 
                         </div>
                     </div>
