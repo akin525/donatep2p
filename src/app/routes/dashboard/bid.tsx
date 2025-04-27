@@ -3,7 +3,7 @@ import { HandHeart } from "lucide-react";
 import DashboardHeader from "../../../components/DashboardHeader";
 import Sidebar from "../../../components/Sidebar";
 import { getAuthToken } from "@/utils/auth";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
@@ -18,6 +18,8 @@ export default function CreateBid() {
   const [plan, setPlan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [canBid, setCanBid] = useState(false);
+  const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
     if (!token || !baseUrl) return;
@@ -42,6 +44,59 @@ export default function CreateBid() {
     fetchPlan();
   }, []);
 
+  useEffect(() => {
+    const checkBidTime = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const isWithinMorningWindow = currentHour === 9 && currentMinute >= 0 && currentMinute <= 30;
+      const isWithinEveningWindow = currentHour === 21 && currentMinute >= 0 && currentMinute <= 30;
+      setCanBid(isWithinMorningWindow || isWithinEveningWindow);
+    };
+
+    const calculateCountdown = () => {
+      const now = new Date();
+      let nextBidTime = new Date();
+
+      if (now.getHours() < 9 || (now.getHours() === 9 && now.getMinutes() > 30)) {
+        // Before 9 PM
+        nextBidTime.setHours(21, 0, 0, 0); // 9:00 PM
+      } else if (now.getHours() < 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
+        // After 9 AM but before 9 PM
+        nextBidTime.setHours(21, 0, 0, 0); // 9:00 PM
+      } else {
+        // After 9:30 PM, move to next day 9:00 AM
+        nextBidTime.setDate(nextBidTime.getDate() + 1);
+        nextBidTime.setHours(9, 0, 0, 0);
+      }
+
+      const diffMs = nextBidTime.getTime() - now.getTime();
+      if (diffMs <= 0) {
+        setCountdown("00:00:00");
+        return;
+      }
+
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      setCountdown(
+          `${hours.toString().padStart(2, "0")}:${minutes
+              .toString()
+              .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+      );
+    };
+
+    checkBidTime();
+    calculateCountdown();
+    const interval = setInterval(() => {
+      checkBidTime();
+      calculateCountdown();
+    }, 1000); // update every second
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -53,6 +108,18 @@ export default function CreateBid() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const isWithinMorningWindow = currentHour === 9 && currentMinute >= 0 && currentMinute <= 30;
+    const isWithinEveningWindow = currentHour === 21 && currentMinute >= 0 && currentMinute <= 30;
+
+    if (!isWithinMorningWindow && !isWithinEveningWindow) {
+      toast.error("Bidding is only allowed between 9:00-9:30 AM and 9:00-9:30 PM");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -83,7 +150,6 @@ export default function CreateBid() {
     }
   };
 
-
   const generateAmountOptions = () => {
     const options = [];
     for (let i = 10; i <= 150; i += 10) {
@@ -91,7 +157,6 @@ export default function CreateBid() {
     }
     return options;
   };
-
 
   return (
       <div className="min-h-screen text-white flex bg-[#050B1E]">
@@ -144,7 +209,6 @@ export default function CreateBid() {
                   <p className="text-red-400 mb-6">Failed to load plan details.</p>
               )}
 
-
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Amount Selection Grid */}
@@ -185,16 +249,27 @@ export default function CreateBid() {
                   />
                 </div>
 
+                {/* Countdown Timer */}
+                {!canBid && (
+                    <div className="text-center mb-4">
+                      <p className="text-gray-400 text-sm mb-2">Next Bidding Window Opens In:</p>
+                      <div className="text-pink-500 text-2xl font-bold tracking-widest">
+                        {countdown}
+                      </div>
+                    </div>
+                )}
+
                 <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || !canBid}
                     className={`w-full text-white py-2 rounded-lg font-medium transition ${
-                        submitting ? "bg-pink-400 cursor-not-allowed" : "bg-pink-600 hover:bg-pink-700"
+                        submitting || !canBid
+                            ? "bg-pink-400 cursor-not-allowed"
+                            : "bg-pink-600 hover:bg-pink-700"
                     }`}
                 >
-                  {submitting ? "Submitting..." : "Submit Bid"}
+                  {submitting ? "Submitting..." : canBid ? "Submit Bid" : "Bidding Closed"}
                 </button>
-
               </form>
             </div>
           </main>

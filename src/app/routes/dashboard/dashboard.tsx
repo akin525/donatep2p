@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { user } = useUser() as any;
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+
+    const referralLink = user?.ref_code ? `${baseUrl}/register?ref=${user.ref_code}` : "";
 
     const handleCopyReferral = () => {
         if (user?.ref_code) {
@@ -75,8 +78,8 @@ export default function Dashboard() {
                                         <p className="text-sm text-gray-400">Referral Link</p>
                                         <button
                                             onClick={() => {
-                                                if (user?.ref_code) {
-                                                    navigator.clipboard.writeText(`https://donate.paymoni.com.ng/register?ref=${user.ref_code}`);
+                                                if (referralLink) {
+                                                    navigator.clipboard.writeText(referralLink);
                                                     toast.success("Referral link copied to clipboard!");
                                                 }
                                             }}
@@ -86,12 +89,13 @@ export default function Dashboard() {
                                             <Copy className="w-4 h-4" />
                                         </button>
                                     </div>
+
                                     <div className="text-white bg-[#1A1F3D] px-4 py-2 rounded-md font-mono text-center text-sm break-all">
-                                        {user?.ref_code ? `https://donate.paymoni.com.ng/register?ref=${user.ref_code}` : "N/A"}
+                                        {referralLink || "N/A"}
                                     </div>
                                 </div>
 
-                                {/* Market Trends */}
+                                    {/* Market Trends */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="text-lg font-semibold text-white">Market Trends</h3>
@@ -171,7 +175,7 @@ export default function Dashboard() {
                                     </div>
                                     <ul className="space-y-3 text-sm text-gray-400">
                                         {user?.recentAsks?.length > 0 ? (
-                                            user.recentAsks.map((ask) => (
+                                            user.recentAsks.map((ask: any) => (
                                                 <li key={ask.id}>
                                                     Asked for {ask.amount} USDT —{" "}
                                                     <span className={ask.status === "pending" ? "text-yellow-300" : "text-green-400"}>
@@ -193,7 +197,7 @@ export default function Dashboard() {
                                     </div>
                                     <ul className="space-y-3 text-sm text-gray-400">
                                         {user?.recentBids?.length > 0 ? (
-                                            user.recentBids.map((bid) => (
+                                            user.recentBids.map((bid: any) => (
                                                 <li key={bid.id}>
                                                     Bid {bid.amount} USDT —{" "}
                                                     <span className={bid.status === "pending" ? "text-yellow-300" : "text-green-400"}>

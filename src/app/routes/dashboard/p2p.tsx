@@ -107,7 +107,7 @@ export default function P2P() {
                                     <p className="text-gray-400">Loading...</p>
                                 ) : availableBids.length > 0 ? (
                                     <ul className="space-y-4">
-                                        {availableBids.map((bid) => (
+                                        {availableBids.map((bid: any) => (
                                             <li key={bid.id}>
                                                 <Link to={`/bids/${bid.id}`}
                                                       className="block p-4 bg-[#0A1128] rounded-lg border border-gray-700 hover:bg-[#1A202C] transition-all">

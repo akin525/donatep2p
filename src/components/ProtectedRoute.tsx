@@ -59,7 +59,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                 }
 
                 throw new Error(data.message || "Unauthorized");
-            } catch (error) {
+            } catch (error: any) {
                 localStorage.removeItem("authToken");
                 sessionStorage.removeItem("authToken");
                 toast.error(error.message || "Session expired. Please login again.");
