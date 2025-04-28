@@ -8,14 +8,21 @@ import { toast } from "react-toastify";
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
 
+interface Plan {
+  id: number;
+  name: string;
+  minimum: number;
+  maximum: number;
+  interest: number;
+  interest_type: string;
+}
+
 export default function CreateBid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
     amount: "",
   });
-  const [plan, setPlan] = useState<any>(null);
+  const [plan, setPlan] = useState<Plan | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [canBid, setCanBid] = useState(false);
@@ -32,10 +39,16 @@ export default function CreateBid() {
             "Content-Type": "application/json",
           },
         });
+
         const data = await response.json();
-        setPlan(data.data[0]);
+        if (response.ok) {
+          setPlan(data.data[0]);
+        } else {
+          throw new Error(data.message || "Failed to fetch plan");
+        }
       } catch (err) {
         console.error("Failed to fetch plan", err);
+        toast.error("Failed to load plan.");
       } finally {
         setLoading(false);
       }
@@ -47,76 +60,76 @@ export default function CreateBid() {
   useEffect(() => {
     const checkBidTime = () => {
       const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-      const isWithinMorningWindow = currentHour === 9 && currentMinute >= 0 && currentMinute <= 30;
-      const isWithinEveningWindow = currentHour === 21 && currentMinute >= 0 && currentMinute <= 30;
-      setCanBid(isWithinMorningWindow || isWithinEveningWindow);
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      const isMorningBidTime = hour === 9 && minute >= 0 && minute <= 30;
+      const isEveningBidTime = hour === 21 && minute >= 0 && minute <= 30;
+
+      setCanBid(isMorningBidTime || isEveningBidTime);
     };
 
     const calculateCountdown = () => {
       const now = new Date();
-      let nextBidTime = new Date();
+      let nextBidTime = new Date(now);
 
       if (now.getHours() < 9 || (now.getHours() === 9 && now.getMinutes() > 30)) {
-        // Before 9 PM
-        nextBidTime.setHours(21, 0, 0, 0); // 9:00 PM
+        nextBidTime.setHours(21, 0, 0, 0);
+        if (now.getHours() > 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
+          nextBidTime.setDate(now.getDate() + 1);
+          nextBidTime.setHours(9, 0, 0, 0);
+        }
       } else if (now.getHours() < 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
-        // After 9 AM but before 9 PM
-        nextBidTime.setHours(21, 0, 0, 0); // 9:00 PM
-      } else {
-        // After 9:30 PM, move to next day 9:00 AM
-        nextBidTime.setDate(nextBidTime.getDate() + 1);
-        nextBidTime.setHours(9, 0, 0, 0);
+        nextBidTime.setHours(21, 0, 0, 0);
       }
 
       const diffMs = nextBidTime.getTime() - now.getTime();
-      if (diffMs <= 0) {
-        setCountdown("00:00:00");
-        return;
-      }
-
       const hours = Math.floor(diffMs / (1000 * 60 * 60));
       const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
       setCountdown(
-          `${hours.toString().padStart(2, "0")}:${minutes
+          `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
               .toString()
-              .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+              .padStart(2, "0")}`
       );
     };
 
     checkBidTime();
     calculateCountdown();
+
     const interval = setInterval(() => {
       checkBidTime();
       calculateCountdown();
-    }, 1000); // update every second
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAmountSelect = (amount: number) => {
-    setFormData((prev) => ({ ...prev, amount: String(amount) }));
+    setFormData({ amount: String(amount) });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    const isWithinMorningWindow = currentHour === 9 && currentMinute >= 0 && currentMinute <= 30;
-    const isWithinEveningWindow = currentHour === 21 && currentMinute >= 0 && currentMinute <= 30;
-
-    if (!isWithinMorningWindow && !isWithinEveningWindow) {
+    if (!canBid) {
       toast.error("Bidding is only allowed between 9:00-9:30 AM and 9:00-9:30 PM");
+      return;
+    }
+
+    if (!formData.amount || parseFloat(formData.amount) <= 0) {
+      toast.error("Please enter a valid amount.");
+      return;
+    }
+
+    if (!plan) {
+      toast.error("No active plan available.");
       return;
     }
 
@@ -137,29 +150,26 @@ export default function CreateBid() {
 
       const data = await response.json();
 
-      console.log(data);
-      if (response.ok && data.success === true) {
+      if (response.ok && data.success) {
         toast.success(data.message || "Bid Successful");
+        setFormData({ amount: "" });
       } else {
-        toast.error(data.message || "Error Occurred");
+        toast.error(data.message || "Failed to submit bid.");
       }
     } catch (error) {
-      toast.error("Error Occurred");
+      console.error(error);
+      toast.error("An error occurred during bidding.");
     } finally {
       setSubmitting(false);
     }
   };
 
   const generateAmountOptions = () => {
-    const options = [];
-    for (let i = 10; i <= 150; i += 10) {
-      options.push(i);
-    }
-    return options;
+    return Array.from({ length: 15 }, (_, i) => (i + 1) * 10);
   };
 
   return (
-      <div className="min-h-screen text-white flex bg-[#050B1E]">
+      <div className="min-h-screen flex text-white bg-[#050B1E]">
         {sidebarOpen && (
             <div
                 className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
@@ -176,16 +186,14 @@ export default function CreateBid() {
             <div className="max-w-3xl mx-auto bg-[#070D20] rounded-xl p-8 border border-gray-800 shadow">
               <div className="flex items-center mb-6">
                 <HandHeart className="w-6 h-6 text-pink-500 mr-3" />
-                <h1 className="text-2xl font-semibold text-white">Create Donation Bid</h1>
+                <h1 className="text-2xl font-semibold">Create Donation Bid</h1>
               </div>
 
-              {/* Plan Display */}
               {loading ? (
                   <p className="text-gray-400 mb-6">Loading plan...</p>
               ) : plan ? (
                   <div className="bg-[#0A1128] border border-pink-600 rounded-2xl p-6 mb-8 shadow-[0_0_20px_#d946ef33]">
                     <h2 className="text-2xl font-bold text-pink-500 mb-4">{plan.name}</h2>
-
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-white">
                       <div className="bg-[#141A31] p-4 rounded-lg border border-gray-700">
                         <p className="text-gray-400 mb-1">Minimum</p>
@@ -200,7 +208,7 @@ export default function CreateBid() {
                       <div className="bg-[#141A31] p-4 rounded-lg border border-gray-700">
                         <p className="text-gray-400 mb-1">Return</p>
                         <p className="text-pink-400 text-lg font-semibold">
-                          {plan.interest}% <span className="capitalize">{plan.interest_type}</span>
+                          {plan.interest}% {plan.interest_type}
                         </p>
                       </div>
                     </div>
@@ -211,7 +219,7 @@ export default function CreateBid() {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Amount Selection Grid */}
+                {/* Amount Selection */}
                 {plan && (
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -236,15 +244,18 @@ export default function CreateBid() {
                     </div>
                 )}
 
-                {/* Amount Input */}
+                {/* Custom Amount Input */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-300">Or enter custom Amount</label>
+                  <label className="block text-sm font-medium text-gray-300">
+                    Or enter custom amount
+                  </label>
                   <input
                       type="number"
                       name="amount"
                       value={formData.amount}
                       onChange={handleChange}
                       required
+                      min="1"
                       className="mt-1 block w-full px-4 py-2 bg-[#0A1128] border border-gray-700 rounded-md text-white focus:ring focus:ring-pink-500 focus:border-pink-500"
                   />
                 </div>
@@ -252,7 +263,9 @@ export default function CreateBid() {
                 {/* Countdown Timer */}
                 {!canBid && (
                     <div className="text-center mb-4">
-                      <p className="text-gray-400 text-sm mb-2">Next Bidding Window Opens In:</p>
+                      <p className="text-gray-400 text-sm mb-2">
+                        Next Bidding Window Opens In:
+                      </p>
                       <div className="text-pink-500 text-2xl font-bold tracking-widest">
                         {countdown}
                       </div>
@@ -262,7 +275,7 @@ export default function CreateBid() {
                 <button
                     type="submit"
                     disabled={submitting || !canBid}
-                    className={`w-full text-white py-2 rounded-lg font-medium transition ${
+                    className={`w-full py-2 rounded-lg font-medium transition ${
                         submitting || !canBid
                             ? "bg-pink-400 cursor-not-allowed"
                             : "bg-pink-600 hover:bg-pink-700"

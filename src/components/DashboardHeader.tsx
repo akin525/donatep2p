@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import {Link, useNavigate} from "react-router";
 import { Menu, ChevronDown, Search } from "lucide-react";
 import { useUser } from "@/context/UserContext.tsx";
 
@@ -10,8 +10,13 @@ export default function DashboardHeader({
 }) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { user } = useUser();
+  const navigate = useNavigate();
 
-  // Helper to get country code for flag URL
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
+    navigate("/login");
+  };
   const getCountryCode = (countryName: string | undefined) => {
     if (!countryName) return "us"; // default fallback
     const countryMap: { [key: string]: string } = {
@@ -114,13 +119,13 @@ export default function DashboardHeader({
                           Support
                         </Link>
                         <div className="border-t border-gray-800"></div>
-                        <Link
-                            to="/login"
-                            className="block px-4 py-2 text-sm text-gray-300 hover:bg-[#070D20] hover:text-white"
+                        <button
+                            onClick={handleLogout}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-[#070D20] hover:text-white"
                             role="menuitem"
                         >
                           Sign out
-                        </Link>
+                        </button>
                       </div>
                     </div>
                 )}

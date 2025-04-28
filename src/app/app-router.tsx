@@ -18,6 +18,7 @@ import Profile from "@/app/routes/dashboard/profile.tsx";
 import SupportPage from "@/app/routes/dashboard/support.tsx";
 import BidDetail from "@/app/routes/dashboard/BidDetail.tsx";
 import AskDetail from "@/app/routes/dashboard/AskDetail.tsx";
+import ReferralPage from "@/app/routes/dashboard/Referral.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -119,6 +120,15 @@ export const router = createBrowserRouter([
     Component: () => (
         <ProtectedRoute>
           <Settings/>
+        </ProtectedRoute>
+    ),
+  },
+    {
+
+    path: "/referral",
+    Component: () => (
+        <ProtectedRoute>
+          <ReferralPage/>
         </ProtectedRoute>
     ),
   },
