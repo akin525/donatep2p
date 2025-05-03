@@ -20,6 +20,7 @@ import BidDetail from "@/app/routes/dashboard/BidDetail.tsx";
 import AskDetail from "@/app/routes/dashboard/AskDetail.tsx";
 import ReferralPage from "@/app/routes/dashboard/Referral.tsx";
 import BidStatusSearch from "@/app/routes/dashboard/BidStatusSearch.tsx";
+import InvestmentsPage from "@/app/routes/dashboard/InvestmentsPage.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -44,10 +45,18 @@ export const router = createBrowserRouter([
 
   },
     {
-    path: "/check-status",
+        path: "/check-status",
+        Component: () => (
+            <ProtectedRoute>
+                <BidStatusSearch/>
+            </ProtectedRoute>
+        ),
+    },
+    {
+    path: "/investments",
       Component: () => (
           <ProtectedRoute>
-            <BidStatusSearch />
+            <InvestmentsPage />
           </ProtectedRoute>
       ),
 
