@@ -19,6 +19,7 @@ import SupportPage from "@/app/routes/dashboard/support.tsx";
 import BidDetail from "@/app/routes/dashboard/BidDetail.tsx";
 import AskDetail from "@/app/routes/dashboard/AskDetail.tsx";
 import ReferralPage from "@/app/routes/dashboard/Referral.tsx";
+import BidStatusSearch from "@/app/routes/dashboard/BidStatusSearch.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,15 @@ export const router = createBrowserRouter([
       Component: () => (
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+      ),
+
+  },
+    {
+    path: "/check-status",
+      Component: () => (
+          <ProtectedRoute>
+            <BidStatusSearch />
           </ProtectedRoute>
       ),
 

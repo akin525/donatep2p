@@ -166,7 +166,28 @@ export default function Dashboard() {
                             </div>
 
                             {/* Recent Activities */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">{/* Recent Bid Activity */}
+                                <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-semibold text-white">Recent Bid Activity</h3>
+                                        <Activity className="text-gray-400 w-5 h-5" />
+                                    </div>
+                                    <ul className="space-y-3 text-sm text-gray-400">
+                                        {user?.recentBids?.length > 0 ? (
+                                            user.recentBids.map((bid: any) => (
+                                                <li key={bid.id}>
+                                                    Bid {bid.amount} USDT —{" "}
+                                                    <span className={bid.status === "pending" ? "text-yellow-300" : "text-green-400"}>
+                                                        {bid.status}
+                                                    </span>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li>No recent bid activity.</li>
+                                        )}
+                                    </ul>
+                                </div>
+
                                 {/* Recent Ask Activity */}
                                 <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
                                     <div className="flex items-center justify-between mb-4">
@@ -189,28 +210,7 @@ export default function Dashboard() {
                                     </ul>
                                 </div>
 
-                                {/* Recent Bid Activity */}
-                                <div className="bg-[#070D20] rounded-xl p-6 border border-gray-800 shadow-xl">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-lg font-semibold text-white">Recent Bid Activity</h3>
-                                        <Activity className="text-gray-400 w-5 h-5" />
-                                    </div>
-                                    <ul className="space-y-3 text-sm text-gray-400">
-                                        {user?.recentBids?.length > 0 ? (
-                                            user.recentBids.map((bid: any) => (
-                                                <li key={bid.id}>
-                                                    Bid {bid.amount} USDT —{" "}
-                                                    <span className={bid.status === "pending" ? "text-yellow-300" : "text-green-400"}>
-                                                        {bid.status}
-                                                    </span>
-                                                </li>
-                                            ))
-                                        ) : (
-                                            <li>No recent bid activity.</li>
-                                        )}
-                                    </ul>
                                 </div>
-                            </div>
 
                         </div>
                     </div>

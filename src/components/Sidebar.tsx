@@ -75,6 +75,13 @@ export default function Sidebar({
                             <CreditCard className="mr-3 h-5 w-5 text-gray-400" />
                             BidAsk-History
                         </Link>
+                        {/*<Link*/}
+                        {/*    to="/check-status"*/}
+                        {/*    className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"*/}
+                        {/*>*/}
+                        {/*    <Database className="mr-3 h-5 w-5 text-gray-400" />*/}
+                        {/*    Check-Bid-Status*/}
+                        {/*</Link>*/}
                         <Link
                             to="/ask"
                             className="flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:bg-[#070D20] hover:text-white"
