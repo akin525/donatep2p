@@ -90,12 +90,12 @@ export default function Wallet() {
                         {[
                             {
                                 label: "USDT Balance",
-                                value: user?.balance?.toLocaleString(undefined, { minimumFractionDigits: 2 }) ?? "0.00",
+                                value: user?.balance?.toLocaleString() ?? "0.00",
                                 icon: <DollarSign className="w-8 h-8 text-blue-400" />,
                             },
                             {
                                 label: "Total Earnings",
-                                value: user?.earning?.toLocaleString(undefined, { minimumFractionDigits: 2 }) ?? "0.00",
+                                value: user?.earning?.toLocaleString() ?? "0.00",
                                 icon: <ArrowUpRight className="w-8 h-8 text-green-400" />,
                             },
                             {
