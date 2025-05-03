@@ -1,12 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar";
 import DashboardHeader from "../../../components/DashboardHeader";
 import { ArrowDownRight, ArrowUpRight, ClipboardList, DollarSign } from "lucide-react";
 import { useUser } from "@/context/UserContext.tsx";
 
+interface Transaction {
+    id: string;
+    description: string;
+    status: string;
+    amount: number;
+    date: string;
+}
+
 export default function Wallet() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { user } = useUser();
+
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    console.warn("No token found.");
+                    setLoading(false);
+                    return;
+                }
+
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}transactions`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch transactions");
+                }
+
+                const data = await response.json();
+                console.log("Fetched transaction data:", data);
+                setTransactions(data.transactions || []); // Make sure it maps correctly
+            } catch (error) {
+                console.error("Error fetching transactions:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTransactions();
+    }, []);
 
     return (
         <div className="min-h-screen text-white flex bg-[#050B1E]">
@@ -29,7 +75,6 @@ export default function Wallet() {
 
                             {/* Wallet Summary Cards */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                {/* Balance */}
                                 <div className="bg-gradient-to-r from-[#1F2937] to-[#111827] p-6 rounded-xl shadow-lg border border-gray-700">
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -42,7 +87,6 @@ export default function Wallet() {
                                     </div>
                                 </div>
 
-                                {/* Earnings */}
                                 <div className="bg-gradient-to-r from-[#1F2937] to-[#111827] p-6 rounded-xl shadow-lg border border-gray-700">
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -76,25 +120,30 @@ export default function Wallet() {
                             <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow">
                                 <h3 className="text-xl font-semibold text-white mb-4">Recent Transactions</h3>
                                 <ul className="divide-y divide-gray-800 text-sm text-gray-300">
-                                    {user?.transactions && user.transactions.length > 0 ? (
-                                        user.transactions.slice(0, 5).map((txn, index) => (
-                                            <li key={index} className="py-3 flex justify-between">
+                                    {loading ? (
+                                        <li className="py-3 text-center text-gray-400">Loading...</li>
+                                    ) : transactions.length > 0 ? (
+                                        transactions.slice(0, 5).map((txn) => (
+                                            <li key={txn.id} className="py-3 flex justify-between">
                                                 <span>{txn.description}</span>
-                                                <span className={
-                                                    txn.status === "Completed" ? "text-green-400" :
-                                                        txn.status === "Pending" ? "text-yellow-300" :
-                                                            "text-gray-400"
-                                                }>
+                                                <span
+                                                    className={
+                                                        txn.status === "Completed"
+                                                            ? "text-green-400"
+                                                            : txn.status === "Pending"
+                                                                ? "text-yellow-300"
+                                                                : "text-gray-400"
+                                                    }
+                                                >
                                                     {txn.status}
                                                 </span>
                                             </li>
                                         ))
                                     ) : (
-                                        <li className="py-3 text-gray-500 text-center">No recent transactions</li>
+                                        <li className="py-3 text-center text-gray-500">No recent transactions</li>
                                     )}
                                 </ul>
                             </div>
-
                         </div>
                     </div>
                 </main>
