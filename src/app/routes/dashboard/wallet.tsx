@@ -1,23 +1,36 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { X, ArrowDown,  Wallet2 } from 'lucide-react';
+import { X, ArrowDown, Wallet2 } from 'lucide-react';
 import Sidebar from "@/components/Sidebar.tsx";
 import DashboardHeader from "@/components/DashboardHeader.tsx";
-import {getAuthToken} from "@/utils/auth.tsx";
-import {useUser} from "@/context/UserContext.tsx";
+import { getAuthToken } from "@/utils/auth.tsx";
+import { useUser } from "@/context/UserContext.tsx";
+
+interface Transaction {
+    id: string;
+    trx_type: string;
+    created_at: string;
+    status: 'success' | 'pending' | 'failed';
+    amount: string;
+    bal_before: string;
+    bal_after: string;
+    wallet: string;
+    trx: string;
+}
+
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
+
 const WalletPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [transactions, setTransactions] = useState([]);
-    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
     const [loading, setLoading] = useState(true);
     const { user } = useUser();
 
     const summary = [
         { label: 'Total Balance', value: user?.balance, icon: <Wallet2 className="w-8 h-8 text-blue-400" /> },
         { label: 'Total Earning', value: user?.earning, icon: <ArrowDown className="w-8 h-8 text-green-400" /> },
-        // { label: 'Total Outflow', value: '2000', icon: <ArrowUp className="w-8 h-8 text-red-400" /> },
     ];
 
     useEffect(() => {
@@ -25,7 +38,6 @@ const WalletPage = () => {
             try {
                 const res = await fetch(`${baseUrl}transactions`, {
                     headers: { Authorization: `Bearer ${token}` }
-
                 });
 
                 const result = await res.json();
@@ -44,7 +56,9 @@ const WalletPage = () => {
 
     return (
         <div className="min-h-screen text-white flex bg-gradient-to-br from-[#0A0F1E] to-[#1E293B]">
-            {sidebarOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden" onClick={() => setSidebarOpen(false)}></div>}
+            {sidebarOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden" onClick={() => setSidebarOpen(false)}></div>
+            )}
 
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
