@@ -1,68 +1,37 @@
-import { useEffect, useState } from "react";
-import Sidebar from "../../../components/Sidebar";
-import DashboardHeader from "../../../components/DashboardHeader";
-import {
-    ArrowDownRight,
-    ArrowUpRight,
-    ClipboardList,
-    DollarSign,
-    X,
-} from "lucide-react";
-import { useUser } from "@/context/UserContext.tsx";
-import { getAuthToken } from "@/utils/auth.tsx";
-import { Link } from "react-router";
-
-interface Transaction {
-    id: string;
-    trx_type: string;
-    status: string;
-    amount: number;
-    bal_before: number;
-    bal_after: number;
-    trx: string;
-    type: string;
-    wallet: string;
-    created_at: string;
-}
-
+import  { useState, useEffect } from 'react';
+import { Link } from 'react-router';
+import { X, ArrowDown,  Wallet2 } from 'lucide-react';
+import Sidebar from "@/components/Sidebar.tsx";
+import DashboardHeader from "@/components/DashboardHeader.tsx";
+import {getAuthToken} from "@/utils/auth.tsx";
+import {useUser} from "@/context/UserContext.tsx";
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
-
-export default function Wallet() {
+const WalletPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [transactions, setTransactions] = useState([]);
+    const [selectedTransaction, setSelectedTransaction] = useState(null);
+    const [loading, setLoading] = useState(true);
     const { user } = useUser();
 
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+    const summary = [
+        { label: 'Total Balance', value: user?.balance, icon: <Wallet2 className="w-8 h-8 text-blue-400" /> },
+        { label: 'Total Earning', value: user?.earning, icon: <ArrowDown className="w-8 h-8 text-green-400" /> },
+        // { label: 'Total Outflow', value: '2000', icon: <ArrowUp className="w-8 h-8 text-red-400" /> },
+    ];
 
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await fetch(`${baseUrl}transactions`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
+                const res = await fetch(`${baseUrl}transactions`, {
+                    headers: { Authorization: `Bearer ${token}` }
+
                 });
 
-                if (!response.ok) throw new Error("Failed to fetch transactions");
-
-                const result = await response.json();
-                const transactionData = (result?.data?.data || []).map((txn: any): Transaction => ({
-                    id: txn.id,
-                    trx_type: txn.trx_type || txn.type || "N/A",
-                    status: txn.status,
-                    amount: parseFloat(txn.amount),
-                    bal_before: parseFloat(txn.bal_before),
-                    bal_after: parseFloat(txn.bal_after),
-                    trx: txn.trx,
-                    type: txn.type,
-                    wallet: txn.wallet,
-                    created_at: txn.created_at,
-                }));
-
-                setTransactions(transactionData);
+                const result = await res.json();
+                if (result.success && result.data && result.data.data) {
+                    setTransactions(result.data.data);
+                }
             } catch (error) {
                 console.error("Error fetching transactions:", error);
             } finally {
@@ -82,107 +51,102 @@ export default function Wallet() {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <DashboardHeader setSidebarOpen={setSidebarOpen} />
 
-                <main className="flex-1 overflow-y-auto p-8 max-w-7xl mx-auto">
-                    <h1 className="text-4xl font-bold text-center mb-10">My Wallet</h1>
+                <div className="min-h-screen bg-[#0f172a] text-white px-6 py-10">
+                    {/* Header */}
+                    <div className="flex items-center justify-between mb-10">
+                        <h1 className="text-3xl font-bold">Wallet Overview</h1>
+                        <div className="flex gap-3">
+                            <Link to="/ask" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Ask</Link>
+                            <Link to="/bid" className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Bids</Link>
+                            <Link to="/history" className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium">History</Link>
+                        </div>
+                    </div>
 
-                    {/* Wallet Summary */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        {[
-                            {
-                                label: "USDT Balance",
-                                value: user?.balance?.toLocaleString() ?? "0.00",
-                                icon: <DollarSign className="w-8 h-8 text-blue-400" />,
-                            },
-                            {
-                                label: "Total Earnings",
-                                value: user?.earning?.toLocaleString() ?? "0.00",
-                                icon: <ArrowUpRight className="w-8 h-8 text-green-400" />,
-                            },
-                            {
-                                label: "Total Transactions",
-                                value: transactions.length.toString(),
-                                icon: <ClipboardList className="w-8 h-8 text-yellow-400" />,
-                            },
-                        ].map((item, idx) => (
-                            <div key={idx} className="bg-[#1F2937] p-6 rounded-2xl shadow-xl border border-gray-700 flex items-center justify-between">
-                                <div>
-                                    <p className="text-gray-400 text-sm">{item.label}</p>
-                                    <h2 className="text-3xl font-semibold">{item.value} USDT</h2>
+                    {/* Summary Cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                        {summary.map((item, index) => (
+                            <div key={index} className="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur">
+                                <div className="flex justify-between items-center">
+                                    <div>
+                                        <p className="text-gray-400 text-sm">{item.label}</p>
+                                        <h2 className="text-2xl font-semibold">{item.value} USDT</h2>
+                                    </div>
+                                    {item.icon}
                                 </div>
-                                {item.icon}
                             </div>
                         ))}
                     </div>
 
-                    {/* Wallet Actions */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                        {[
-                            { label: "Ask", icon: <ArrowUpRight className="w-5 h-5" />, to: "/ask" },
-                            { label: "Bids", icon: <ArrowDownRight className="w-5 h-5" />, to: "/bid" },
-                            { label: "Transaction History", icon: <ClipboardList className="w-5 h-5" />, to: "/wallet/transactions" },
-                        ].map((action) => (
-                            <Link key={action.label} to={action.to} className="flex items-center justify-between p-5 rounded-2xl bg-primary/10 border border-primary text-white hover:bg-primary/20 transition">
-                                <span className="font-medium text-lg">{action.label}</span>
-                                {action.icon}
-                            </Link>
-                        ))}
-                    </div>
-
-                    {/* Transactions */}
-                    <div className="bg-[#0F172A] p-6 rounded-2xl border border-gray-800 shadow-lg">
-                        <div className="flex justify-between items-center mb-5">
-                            <h3 className="text-2xl font-semibold">Recent Transactions</h3>
-                            {transactions.length > 5 && (
-                                <Link to="/wallet/transactions" className="text-sm text-blue-400 hover:underline">View All</Link>
-                            )}
-                        </div>
-                        <ul className="divide-y divide-gray-800 text-sm text-gray-300">
+                    {/* Transactions Table */}
+                    <div>
+                        <h3 className="text-xl font-bold mb-4">Recent Transactions</h3>
+                        <div className="overflow-x-auto bg-[#111827] rounded-xl p-4 border border-gray-800">
                             {loading ? (
-                                <li className="py-4 text-center text-gray-400">Loading...</li>
-                            ) : transactions.length > 0 ? (
-                                transactions.slice(0, 5).map((txn) => (
-                                    <li key={txn.id} onClick={() => setSelectedTransaction(txn)} className="py-4 cursor-pointer hover:bg-white/5 px-3 rounded-md transition">
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <p className="text-white font-medium">{txn.trx_type}</p>
-                                                <p className="text-gray-500 text-xs">{new Date(txn.created_at).toLocaleString()}</p>
-                                            </div>
-                                            <div className="text-right">
-                                                <p className={txn.status === "Completed" ? "text-green-400" : txn.status === "Pending" ? "text-yellow-300" : "text-red-400"}>{txn.status}</p>
-                                                <p className="text-white font-semibold">{txn.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} USDT</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                ))
+                                <p className="text-center text-gray-400">Loading...</p>
                             ) : (
-                                <li className="py-4 text-center text-gray-500">No recent transactions</li>
+                                <table className="w-full text-left text-sm">
+                                    <thead>
+                                    <tr className="text-gray-400 border-b border-gray-700">
+                                        <th className="py-3">Type</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {transactions.map((txn) => (
+                                        <tr
+                                            key={txn.id}
+                                            className="border-b border-gray-800 hover:bg-white/5 cursor-pointer"
+                                            onClick={() => setSelectedTransaction(txn)}
+                                        >
+                                            <td className="py-3">{txn.trx_type}</td>
+                                            <td>{new Date(txn.created_at).toLocaleDateString()}</td>
+                                            <td className={
+                                                txn.status === 'success'
+                                                    ? 'text-green-400'
+                                                    : txn.status === 'pending'
+                                                        ? 'text-yellow-400'
+                                                        : 'text-red-400'
+                                            }>
+                                                {txn.status}
+                                            </td>
+                                            <td>{parseFloat(txn.amount).toFixed(2)} USDT</td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
                             )}
-                        </ul>
-                    </div>
-                </main>
-            </div>
-
-            {/* Transaction Modal */}
-            {selectedTransaction && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-                    <div className="bg-[#1E293B] w-full max-w-lg p-6 rounded-2xl relative text-white shadow-2xl">
-                        <button onClick={() => setSelectedTransaction(null)} className="absolute top-3 right-3 text-gray-400 hover:text-white">
-                            <X className="w-5 h-5" />
-                        </button>
-                        <h2 className="text-2xl font-semibold mb-4">Transaction Details</h2>
-                        <div className="space-y-2 text-sm text-gray-300">
-                            <p><strong>Type:</strong> {selectedTransaction.trx_type}</p>
-                            <p><strong>Status:</strong> {selectedTransaction.status}</p>
-                            <p><strong>Amount:</strong> {selectedTransaction.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })} USDT</p>
-                            <p><strong>Balance Before:</strong> {selectedTransaction.bal_before}</p>
-                            <p><strong>Balance After:</strong> {selectedTransaction.bal_after}</p>
-                            <p><strong>Wallet:</strong> {selectedTransaction.wallet}</p>
-                            <p><strong>TRX ID:</strong> {selectedTransaction.trx}</p>
-                            <p><strong>Date:</strong> {new Date(selectedTransaction.created_at).toLocaleString()}</p>
                         </div>
                     </div>
+
+                    {/* Slide-In Drawer */}
+                    {selectedTransaction && (
+                        <div className="fixed inset-0 flex justify-end z-50 bg-black bg-opacity-50">
+                            <div className="bg-[#1E293B] w-full max-w-md h-full shadow-xl p-6 overflow-y-auto">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-xl font-bold">Transaction Details</h2>
+                                    <button onClick={() => setSelectedTransaction(null)}>
+                                        <X className="w-6 h-6 text-gray-400 hover:text-white" />
+                                    </button>
+                                </div>
+                                <div className="space-y-3 text-sm text-gray-300">
+                                    <p><strong>Type:</strong> {selectedTransaction.trx_type}</p>
+                                    <p><strong>Status:</strong> {selectedTransaction.status}</p>
+                                    <p><strong>Amount:</strong> {parseFloat(selectedTransaction.amount).toFixed(2)} USDT</p>
+                                    <p><strong>Balance Before:</strong> {selectedTransaction.bal_before}</p>
+                                    <p><strong>Balance After:</strong> {selectedTransaction.bal_after}</p>
+                                    <p><strong>Wallet:</strong> {selectedTransaction.wallet}</p>
+                                    <p><strong>TRX ID:</strong> {selectedTransaction.trx}</p>
+                                    <p><strong>Date:</strong> {new Date(selectedTransaction.created_at).toLocaleString()}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     );
-}
+};
+
+export default WalletPage;
