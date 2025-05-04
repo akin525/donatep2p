@@ -31,6 +31,7 @@ const WalletPage = () => {
     const summary = [
         { label: 'Total Balance', value: user?.balance, icon: <Wallet2 className="w-8 h-8 text-blue-400" /> },
         { label: 'Total Earning', value: user?.earning, icon: <ArrowDown className="w-8 h-8 text-green-400" /> },
+        { label: 'Running Invest', value: user?.runningInvest, icon: <ArrowDown className="w-8 h-8 text-green-400" /> },
     ];
 
     useEffect(() => {

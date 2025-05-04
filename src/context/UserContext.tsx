@@ -22,6 +22,7 @@ interface User {
   phone: string;
   balance: string;
   earning: string;
+  runningInvest: string;
   telegram_id: string;
   telegram_verified: 1 | 0;
   email_verified: 1 | 0;
