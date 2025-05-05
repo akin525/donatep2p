@@ -52,6 +52,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                             ...data.data.user,
                             recentBids: data.data.recentBids || [],
                             recentAsks: data.data.recentAsks || [],
+                            runningInvest:data.data.runningInvest,
                         });
                         setIsValid(true);
                         return;

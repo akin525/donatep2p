@@ -23,8 +23,9 @@ interface User {
   phone: string;
   balance: string;
   earning: string;
-  runningInvest: string;
+  runningInvest: string | 0;
   telegram_id: string;
+  telegramchannel: string;
   telegram_verified: 1 | 0;
   email_verified: 1 | 0;
   country: string;
