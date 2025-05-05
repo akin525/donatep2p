@@ -68,6 +68,7 @@ export default function RegisterPage() {
       firstname:formData.firstName,
       lastname: formData.lastName,
       email: formData.email,
+      username: formData.username,
       phone: formData.phone,
       password: formData.password,
       bep_address: formData.bep_address,
