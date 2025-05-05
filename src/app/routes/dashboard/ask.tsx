@@ -23,7 +23,6 @@ export default function AskPage() {
   const [balSource, setBalSource] = useState("balance");
   const [loading, setLoading] = useState(false);
   const [askSuccess, setAskSuccess] = useState(false);
-  const { user } = useUser();
   const [bepAddress, setBepAddress] = useState("");
 
   const handleAskRequest = async () => {
@@ -36,10 +35,10 @@ export default function AskPage() {
     const isEveningTime =
         currentHour === 21 && currentMinutes >= 0 && currentMinutes <= 30;
 
-    if (!isMorningTime && !isEveningTime) {
-      toast.error("Ask requests are allowed only between 9:00–9:30 AM and 9:00–9:30 PM.");
-      return;
-    }
+    // if (!isMorningTime && !isEveningTime) {
+    //   toast.error("Ask requests are allowed only between 9:00–9:30 AM and 9:00–9:30 PM.");
+    //   return;
+    // }
 
     setLoading(true);
     try {
@@ -70,7 +69,7 @@ export default function AskPage() {
       setLoading(false);
     }
   };
-
+  const { user } = useUser() as any;
   const amountOptions = generateAmountOptions();
 
   useEffect(() => {

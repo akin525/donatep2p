@@ -67,6 +67,8 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                             sitebot: data.data.siteBot,
                             telegramchannel: settingsData?.data?.telegram_channel || null,
                             telegramgroup: settingsData?.data?.telegram_group || null,
+                            timeopening: settingsData?.data?.opening_time || null,
+                            timeclosiung: settingsData?.data?.closing_time || null,
                         });
 
                         setIsValid(true);

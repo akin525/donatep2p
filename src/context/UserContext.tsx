@@ -34,6 +34,8 @@ interface User {
   profile_photo_path: string | null;
   ref_code: string;
   referral: string;
+  timeopening: string;
+  timeclosiung: string;
   status: string;
   bep_address: string | null;
   telegram_otp?: string;
