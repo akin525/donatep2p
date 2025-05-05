@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { getAuthToken } from "@/utils/auth";
 import { useUser } from "@/context/UserContext.tsx";
 import DashboardHeader from "@/components/DashboardHeader";
@@ -24,6 +24,7 @@ export default function AskPage() {
   const [loading, setLoading] = useState(false);
   const [askSuccess, setAskSuccess] = useState(false);
   const { user } = useUser();
+  const [bepAddress, setBepAddress] = useState("");
 
   const handleAskRequest = async () => {
     const now = new Date();
@@ -50,7 +51,7 @@ export default function AskPage() {
         },
         body: JSON.stringify({
           bal_source: balSource,
-          bep_address: user?.bep_address,
+          bep_address: bepAddress,
           amount,
         }),
       });
@@ -71,6 +72,12 @@ export default function AskPage() {
   };
 
   const amountOptions = generateAmountOptions();
+
+  useEffect(() => {
+    if (user?.bep_address) {
+      setBepAddress(user.bep_address);
+    }
+  }, [user]);
 
   return (
       <div className="min-h-screen bg-[#050B1E] text-white flex">
@@ -145,8 +152,37 @@ export default function AskPage() {
                       placeholder="Or enter a custom amount"
                       className="p-4 w-full rounded-lg bg-[#0A1128] border border-gray-700 text-white"
                   />
+
+                  {/* BEP Address Input */}
+                  <div className="mb-4">
+                    <label className="text-sm text-gray-400 mb-2 block">BEP Address</label>
+
+                  </div>
+
                 </div>
 
+                <div className="flex gap-2">
+                  <input
+                      type="text"
+                      value={bepAddress}
+                      onChange={(e) => setBepAddress(e.target.value)}
+                      placeholder="Enter your BEP address"
+                      className="p-4 flex-1 rounded-lg bg-[#0A1128] border border-gray-700 text-white"
+                  />
+                  <Button
+                      type="button"
+                      onClick={() => {
+                        if (user?.bep_address) {
+                          setBepAddress(user.bep_address);
+                          toast.success("BEP address auto-filled from your profile.");
+                        } else {
+                          toast.warn("No BEP address found in your profile.");
+                        }
+                      }}
+                  >
+                    Auto Fill
+                  </Button>
+                </div>
                 {/* Notice about allowed times */}
                 <div className="text-yellow-400 text-sm text-center mb-4">
                   Ask requests are only allowed between 9:00–9:30 AM and 9:00–9:30 PM.
