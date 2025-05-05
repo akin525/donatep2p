@@ -64,6 +64,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                             recentBids: data.data.recentBids || [],
                             recentAsks: data.data.recentAsks || [],
                             runningInvest: data.data.runningInvest,
+                            sitebot: data.data.siteBot,
                             telegramchannel: settingsData?.data?.telegram_channel || null,
                             telegramgroup: settingsData?.data?.telegram_group || null,
                         });

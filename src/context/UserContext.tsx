@@ -27,6 +27,7 @@ interface User {
   telegram_id: string;
   telegramchannel: string;
   telegramgroup: string;
+  sitebot: string;
   telegram_verified: 1 | 0;
   email_verified: 1 | 0;
   country: string;

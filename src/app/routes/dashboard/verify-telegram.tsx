@@ -64,6 +64,9 @@ export default function VerifyTelegramPage() {
                         <br />
                         2. Start the bot <br />
                         3. It will reply with your user ID — that's your Chat ID!
+                        4. Search for @ToluxsysTestBot!
+                        5. Start the bot <br />
+
                     </p>
                 </div>
 
