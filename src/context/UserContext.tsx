@@ -14,6 +14,7 @@ interface Transaction {
   updated_at: string;
 }
 
+
 interface User {
   id: number;
   firstname: string;

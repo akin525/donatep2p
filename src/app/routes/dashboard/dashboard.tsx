@@ -111,18 +111,18 @@ export default function Dashboard() {
 
                             {/* Quick Actions */}
                             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <button className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
-                                    <span>Send USDT</span>
+                                <Link to="/ask"className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
+                                    <span>Ask</span>
                                     <ArrowRightLeft className="w-5 h-5 text-primary" />
-                                </button>
-                                <button className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
-                                    <span>Buy USDT</span>
+                                </Link>
+                                <Link to="/bid" className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
+                                    <span>Bids</span>
                                     <DollarSign className="w-5 h-5 text-primary" />
-                                </button>
-                                <button className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
+                                </Link>
+                                <Link to="/history" className="flex items-center justify-between px-4 py-3 rounded-lg border border-primary text-white hover:bg-primary/20 transition">
                                     <span>Transaction History</span>
                                     <Activity className="w-5 h-5 text-primary" />
-                                </button>
+                                </Link>
                             </div>
 
                             {/* P2P Donations */}
