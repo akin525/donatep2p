@@ -26,14 +26,14 @@ export default function AskPage() {
   const [bepAddress, setBepAddress] = useState("");
 
   const handleAskRequest = async () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinutes = now.getMinutes();
+    // const now = new Date();
+    // const currentHour = now.getHours();
+    // const currentMinutes = now.getMinutes();
 
-    const isMorningTime =
-        currentHour === 9 && currentMinutes >= 0 && currentMinutes <= 30;
-    const isEveningTime =
-        currentHour === 21 && currentMinutes >= 0 && currentMinutes <= 30;
+    // const isMorningTime =
+    //     currentHour === 9 && currentMinutes >= 0 && currentMinutes <= 30;
+    // const isEveningTime =
+    //     currentHour === 21 && currentMinutes >= 0 && currentMinutes <= 30;
 
     // if (!isMorningTime && !isEveningTime) {
     //   toast.error("Ask requests are allowed only between 9:00–9:30 AM and 9:00–9:30 PM.");
