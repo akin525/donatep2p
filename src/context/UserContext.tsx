@@ -26,6 +26,7 @@ interface User {
   runningInvest: string | 0;
   telegram_id: string;
   telegramchannel: string;
+  telegramgroup: string;
   telegram_verified: 1 | 0;
   email_verified: 1 | 0;
   country: string;

@@ -28,6 +28,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
             }
 
             try {
+                // 1. Validate user session
                 const response = await fetch(`${baseUrl}dashboard`, {
                     method: "GET",
                     headers: {
@@ -38,8 +39,6 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
                 const data = await response.json();
 
-                console.log(data);
-
                 if (response.ok) {
                     if (data.message === "Telegram Id Verification Required.") {
                         navigate("/verify-telegram");
@@ -47,13 +46,28 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                     }
 
                     if (data.success === true) {
-                        // Set user, recentBids, and recentAsks
+                        // 2. Fetch system settings
+                        const settingsResponse = await fetch(`${baseUrl}system-config`, {
+                            method: "GET",
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                                "Content-Type": "application/json",
+                            },
+                        });
+
+                        const settingsData = await settingsResponse.json();
+                        console.log("Settings:", settingsData);
+
+                        // 3. Merge user data with settings
                         setUser({
                             ...data.data.user,
                             recentBids: data.data.recentBids || [],
                             recentAsks: data.data.recentAsks || [],
-                            runningInvest:data.data.runningInvest,
+                            runningInvest: data.data.runningInvest,
+                            telegramchannel: settingsData?.data?.telegram_channel || null,
+                            telegramgroup: settingsData?.data?.telegram_group || null,
                         });
+
                         setIsValid(true);
                         return;
                     }
@@ -69,7 +83,8 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         };
 
         verifyToken();
-    }, [navigate]);
+    }, [navigate, setUser]);
+
 
     if (isValid === null) {
         return (

@@ -2,9 +2,11 @@ import { useState } from "react";
 import { MessageCircle, Send } from "lucide-react";
 import DashboardHeader from "@/components/DashboardHeader";
 import Sidebar from "@/components/Sidebar";
+import {useUser} from "@/context/UserContext.tsx";
 
 export default function SupportPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { user } = useUser() as any;
 
     return (
         <div className="min-h-screen bg-[#050B1E] text-white flex">
@@ -34,7 +36,7 @@ export default function SupportPage() {
                                     Stay updated with official announcements and news.
                                 </p>
                                 <a
-                                    href="https://t.me/yourchannel" // <-- Replace this with your real channel link
+                                    href={user?.telegramchannel} // <-- Replace this with your real channel link
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="block w-full text-center py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -53,7 +55,7 @@ export default function SupportPage() {
                                     Chat, ask questions, and connect with the community.
                                 </p>
                                 <a
-                                    href="https://t.me/yourgroup" // <-- Replace this with your real group link
+                                    href={user?.telegramgroup} // <-- Replace this with your real group link
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="block w-full text-center py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
