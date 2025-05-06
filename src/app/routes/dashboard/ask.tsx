@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { getAuthToken } from "@/utils/auth";
 import { useUser } from "@/context/UserContext.tsx";
 import DashboardHeader from "@/components/DashboardHeader";
