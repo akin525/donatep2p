@@ -25,8 +25,8 @@ export default function CreateBid() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  // const [canBid, setCanBid] = useState(false);
-  // const [countdown, setCountdown] = useState<string>("");
+  const [canBid, setCanBid] = useState(false);
+  const [countdown, setCountdown] = useState<string>("");
 
   useEffect(() => {
     if (!token || !baseUrl) return;
@@ -58,49 +58,49 @@ export default function CreateBid() {
   }, []);
 
   useEffect(() => {
-    // const checkBidTime = () => {
-    //   const now = new Date();
-    //   const hour = now.getHours();
-    //   const minute = now.getMinutes();
-    //
-    //   const isMorningBidTime = hour === 9 && minute >= 0 && minute <= 30;
-    //   const isEveningBidTime = hour === 21 && minute >= 0 && minute <= 30;
-    //
-    //   setCanBid(isMorningBidTime || isEveningBidTime);
-    // };
+    const checkBidTime = () => {
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
 
-    // const calculateCountdown = () => {
-    //   const now = new Date();
-    //   let nextBidTime = new Date(now);
-    //
-    //   if (now.getHours() < 9 || (now.getHours() === 9 && now.getMinutes() > 30)) {
-    //     nextBidTime.setHours(21, 0, 0, 0);
-    //     if (now.getHours() > 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
-    //       nextBidTime.setDate(now.getDate() + 1);
-    //       nextBidTime.setHours(9, 0, 0, 0);
-    //     }
-    //   } else if (now.getHours() < 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
-    //     nextBidTime.setHours(21, 0, 0, 0);
-    //   }
-    //
-    //   const diffMs = nextBidTime.getTime() - now.getTime();
-    //   const hours = Math.floor(diffMs / (1000 * 60 * 60));
-    //   const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-    //   const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-    //
-    //   setCountdown(
-    //       `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
-    //           .toString()
-    //           .padStart(2, "0")}`
-    //   );
-    // };
+      const isMorningBidTime = hour === 9 && minute >= 0 && minute <= 30;
+      const isEveningBidTime = hour === 21 && minute >= 0 && minute <= 30;
 
-    // checkBidTime();
-    // calculateCountdown();
+      setCanBid(isMorningBidTime || isEveningBidTime);
+    };
+
+    const calculateCountdown = () => {
+      const now = new Date();
+      let nextBidTime = new Date(now);
+
+      if (now.getHours() < 9 || (now.getHours() === 9 && now.getMinutes() > 30)) {
+        nextBidTime.setHours(21, 0, 0, 0);
+        if (now.getHours() > 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
+          nextBidTime.setDate(now.getDate() + 1);
+          nextBidTime.setHours(9, 0, 0, 0);
+        }
+      } else if (now.getHours() < 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
+        nextBidTime.setHours(21, 0, 0, 0);
+      }
+
+      const diffMs = nextBidTime.getTime() - now.getTime();
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      setCountdown(
+          `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+              .toString()
+              .padStart(2, "0")}`
+      );
+    };
+
+    checkBidTime();
+    calculateCountdown();
 
     const interval = setInterval(() => {
-      // checkBidTime();
-      // calculateCountdown();
+      checkBidTime();
+      calculateCountdown();
     }, 1000);
 
     return () => clearInterval(interval);
@@ -118,10 +118,10 @@ export default function CreateBid() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // if (!canBid) {
-    //   toast.error("Bidding is only allowed between 9:00-9:30 AM and 9:00-9:30 PM");
-    //   return;
-    // }
+    if (!canBid) {
+      toast.error("Bidding is only allowed between 9:00-9:30 AM and 9:00-9:30 PM");
+      return;
+    }
 
     if (!formData.amount || parseFloat(formData.amount) <= 0) {
       toast.error("Please enter a valid amount.");
@@ -261,23 +261,27 @@ export default function CreateBid() {
                 </div>
 
                 {/* Countdown Timer */}
-                {/*{!canBid && (*/}
-                {/*    <div className="text-center mb-4">*/}
-                {/*      <p className="text-gray-400 text-sm mb-2">*/}
-                {/*        Next Bidding Window Opens In:*/}
-                {/*      </p>*/}
-                {/*      <div className="text-pink-500 text-2xl font-bold tracking-widest">*/}
-                {/*        {countdown}*/}
-                {/*      </div>*/}
-                {/*    </div>*/}
-                {/*)}*/}
+                {!canBid && (
+                    <div className="text-center mb-4">
+                      <p className="text-gray-400 text-sm mb-2">
+                        Next Bidding Window Opens In:
+                      </p>
+                      <div className="text-pink-500 text-2xl font-bold tracking-widest">
+                        {countdown}
+                      </div>
+                    </div>
+                )}
 
                 <button
                     type="submit"
-                    // disabled={submitting || !canBid}
-                    className={`w-full py-2 rounded-lg font-medium transition `}
+                    disabled={submitting || !canBid}
+                    className={`w-full py-2 rounded-lg font-medium transition ${
+                        submitting || !canBid
+                            ? "bg-pink-400 cursor-not-allowed"
+                            : "bg-pink-600 hover:bg-pink-700"
+                    }`}
                 >
-                  {submitting ? "Submitting..."  : "Submit Bid"}
+                  {submitting ? "Submitting..." : canBid ? "Submit Bid" : "Bidding Closed"}
                 </button>
               </form>
             </div>

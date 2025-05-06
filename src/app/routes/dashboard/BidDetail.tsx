@@ -193,8 +193,11 @@ function StatusBadge({ status,  }: { status: string; isPayment?: boolean }) {
 
     const statusColors: Record<string, string> = {
         awaiting_payment: "bg-yellow-500 text-black",
+        success: "bg-green-100 text-green-700",
         paired: "bg-blue-500 text-white",
         completed: "bg-green-600 text-white",
+        approved: "bg-green-600 text-white",
+        payment_confirmed: "bg-blue-800 text-white",
         confirmed: "bg-green-600 text-white",
         pending: "bg-yellow-600 text-black",
         failed: "bg-red-600 text-white",

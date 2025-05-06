@@ -5,8 +5,11 @@ import DashboardHeader from "@/components/DashboardHeader.tsx";
 
 interface Investment {
     id: number;
-    title: string;
     amount: number;
+    expected_profit: number;
+    expected_return: number;
+    return_date: string;
+    reference: string;
     status: string;
     created_at: string;
 }
@@ -44,54 +47,81 @@ export default function InvestmentsPage() {
         fetchInvestments();
     }, []);
 
-    return (
-        <div className="min-h-screen text-white flex bg-gradient-to-br from-[#0A0F1E] to-[#1E293B]">
-            {sidebarOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden" onClick={() => setSidebarOpen(false)}></div>}
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case "completed":
+                return "text-green-500";
+            case "running":
+                return "text-yellow-400";
+            default:
+                return "text-red-500";
+        }
+    };
 
+    return (
+        <div className="min-h-screen flex bg-gradient-to-br from-[#0A0F1E] to-[#1E293B] text-white">
+            {sidebarOpen && <div className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden" onClick={() => setSidebarOpen(false)} />}
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
             <div className="flex-1 flex flex-col overflow-hidden">
                 <DashboardHeader setSidebarOpen={setSidebarOpen} />
 
-                <div className="min-h-screen bg-[#0A0F1E] text-white p-6">
-            <h1 className="text-3xl font-bold mb-6 text-center">My Investments</h1>
+                <main className="p-6">
+                    <h1 className="text-3xl font-bold text-center mb-6">My Investments</h1>
 
-            {loading ? (
-                <p className="text-center text-gray-400">Loading...</p>
-            ) : error ? (
-                <p className="text-center text-red-400">Error: {error}</p>
-            ) : investments.length === 0 ? (
-                <p className="text-center text-gray-500">No investments found.</p>
-            ) : (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {investments.map((inv) => (
-                        <div
-                            key={inv.id}
-                            className="bg-[#1F2937] border border-gray-700 rounded-lg p-4 shadow hover:shadow-xl transition"
-                        >
-                            <h2 className="text-xl font-semibold mb-1">{inv.title}</h2>
-                            <p className="text-gray-400 text-sm mb-2">
-                                {new Date(inv.created_at).toLocaleString()}
-                            </p>
-                            <p className="text-green-400 font-bold mb-1">
-                                ₦{inv.amount.toLocaleString()}
-                            </p>
-                            <p
-                                className={`text-sm font-medium ${
-                                    inv.status === "completed"
-                                        ? "text-green-500"
-                                        : inv.status === "pending"
-                                            ? "text-yellow-400"
-                                            : "text-red-500"
-                                }`}
-                            >
-                                Status: {inv.status}
-                            </p>
+                    {loading ? (
+                        <p className="text-center text-gray-400">Loading...</p>
+                    ) : error ? (
+                        <p className="text-center text-red-400">Error: {error}</p>
+                    ) : investments.length === 0 ? (
+                        <p className="text-center text-gray-500">No investments found.</p>
+                    ) : (
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {investments.map((inv) => (
+                                <div
+                                    key={inv.id}
+                                    className="bg-[#1F2937] border border-gray-700 rounded-xl p-5 shadow-lg hover:shadow-2xl transition"
+                                >
+                                    <div className="mb-3">
+                                        <p className="text-sm text-gray-400">Reference:</p>
+                                        <p className="font-semibold">{inv.reference}</p>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p className="text-sm text-gray-400">Created:</p>
+                                        <p>{new Date(inv.created_at).toLocaleString()}</p>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p className="text-sm text-gray-400">Return Date:</p>
+                                        <p>{new Date(inv.return_date).toLocaleString()}</p>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p className="text-sm text-gray-400">Invested Amount:</p>
+                                        <p className="text-blue-400 font-bold">{Number(inv.amount).toLocaleString()} USDT</p>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p className="text-sm text-gray-400">Expected Profit:</p>
+                                        <p className="text-green-400 font-bold">+{Number(inv.expected_profit).toLocaleString()} USDT</p>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <p className="text-sm text-gray-400">Expected Return:</p>
+                                        <p className="text-purple-400 font-bold">{Number(inv.expected_return).toLocaleString()} USDT</p>
+                                    </div>
+
+                                    <div className="mt-2">
+                                        <p className={`text-sm font-semibold ${getStatusColor(inv.status)}`}>
+                                            Status: {inv.status}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                    )}
+                </main>
             </div>
         </div>
     );

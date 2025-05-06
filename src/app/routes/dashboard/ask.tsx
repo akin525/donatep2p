@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { getAuthToken } from "@/utils/auth";
 import { useUser } from "@/context/UserContext.tsx";
 import DashboardHeader from "@/components/DashboardHeader";
@@ -9,13 +9,7 @@ import { Button } from "@/components/ui/button";
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
 
-const generateAmountOptions = () => {
-  const options = [];
-  for (let i = 10; i <= 150; i += 10) {
-    options.push(i);
-  }
-  return options;
-};
+const generateAmountOptions = () => Array.from({ length: 15 }, (_, i) => (i + 1) * 10);
 
 export default function AskPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,22 +17,20 @@ export default function AskPage() {
   const [balSource, setBalSource] = useState("balance");
   const [loading, setLoading] = useState(false);
   const [askSuccess, setAskSuccess] = useState(false);
+  const { user } = useUser();
   const [bepAddress, setBepAddress] = useState("");
 
   const handleAskRequest = async () => {
-    // const now = new Date();
-    // const currentHour = now.getHours();
-    // const currentMinutes = now.getMinutes();
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const isValidTime =
+        (currentHour === 9 || currentHour === 21) && currentMinutes <= 30;
 
-    // const isMorningTime =
-    //     currentHour === 9 && currentMinutes >= 0 && currentMinutes <= 30;
-    // const isEveningTime =
-    //     currentHour === 21 && currentMinutes >= 0 && currentMinutes <= 30;
-
-    // if (!isMorningTime && !isEveningTime) {
-    //   toast.error("Ask requests are allowed only between 9:00–9:30 AM and 9:00–9:30 PM.");
-    //   return;
-    // }
+    if (!isValidTime) {
+      toast.error("Ask requests are allowed only between 9:00–9:30 AM and 9:00–9:30 PM.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -69,14 +61,14 @@ export default function AskPage() {
       setLoading(false);
     }
   };
-  const { user } = useUser() as any;
-  const amountOptions = generateAmountOptions();
 
-  useEffect(() => {
-    if (user?.bep_address) {
-      setBepAddress(user.bep_address);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user?.bep_address) {
+  //     setBepAddress(user.bep_address);
+  //   }
+  // }, [user]);
+
+  const amountOptions = generateAmountOptions();
 
   return (
       <div className="min-h-screen bg-[#050B1E] text-white flex">
@@ -91,89 +83,78 @@ export default function AskPage() {
         <div className="flex-1 flex flex-col">
           <DashboardHeader setSidebarOpen={setSidebarOpen} />
 
-          <main className="flex-1 overflow-y-auto py-10 px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <h1 className="text-2xl font-bold mb-6">Create Ask Request</h1>
+          <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+            <div className="max-w-3xl mx-auto bg-[#0A1128] p-6 rounded-2xl shadow-xl">
+              <h2 className="text-2xl font-semibold mb-6">Create Ask Request</h2>
 
-              <div className="space-y-6">
-                {/* Wallet Source Selection */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                  <div
-                      onClick={() => setBalSource("balance")}
-                      className={`p-4 rounded-xl cursor-pointer transition ${
-                          balSource === "balance" ? "bg-[#0A1128]" : "bg-[#1A2433]"
-                      } border border-gray-700 shadow hover:shadow-lg`}
-                  >
-                    <p className="text-gray-400">Balance</p>
-                    <p className="text-white text-2xl font-semibold">
-                      {user?.balance} USDT
-                    </p>
-                  </div>
-                  <div
-                      onClick={() => setBalSource("earning")}
-                      className={`p-4 rounded-xl cursor-pointer transition ${
-                          balSource === "earning" ? "bg-[#0A1128]" : "bg-[#1A2433]"
-                      } border border-gray-700 shadow hover:shadow-lg`}
-                  >
-                    <p className="text-gray-400">Earnings</p>
-                    <p className="text-white text-2xl font-semibold">
-                      {user?.earning} USDT
-                    </p>
-                  </div>
+              {/* Wallet Source */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                {[
+                  { type: "balance", label: "Balance", value: user?.balance },
+                  { type: "earning", label: "Earnings", value: user?.earning },
+                ].map(({ type, label, value }) => (
+                    <div
+                        key={type}
+                        onClick={() => setBalSource(type)}
+                        className={`rounded-xl p-5 cursor-pointer border border-gray-700 transition-all ${
+                            balSource === type
+                                ? "bg-blue-900 ring-2 ring-blue-500"
+                                : "bg-[#1A2433]"
+                        }`}
+                    >
+                      <p className="text-gray-400">{label}</p>
+                      <p className="text-2xl font-bold mt-2">{value} USDT</p>
+                    </div>
+                ))}
+              </div>
+
+              {/* Amount Selector */}
+              <div className="mb-6">
+                <label className="text-sm text-gray-300 mb-2 block">
+                  Select Amount (or enter manually)
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
+                  {amountOptions.map((amt) => (
+                      <button
+                          key={amt}
+                          onClick={() => setAmount(amt)}
+                          className={`py-2 rounded-lg text-sm font-medium border text-center transition ${
+                              amount === amt
+                                  ? "bg-blue-600 text-white border-blue-500"
+                                  : "bg-[#1A2433] text-gray-300 border-gray-700 hover:bg-[#2A3444]"
+                          }`}
+                      >
+                        {amt} USDT
+                      </button>
+                  ))}
                 </div>
 
-                {/* Amount Selection Grid */}
-                <div className="mb-4">
-                  <label className="text-sm text-gray-400 mb-2 block">
-                    Select Amount (or enter manually)
-                  </label>
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-3 mb-4">
-                    {amountOptions.map((amt) => (
-                        <button
-                            key={amt}
-                            type="button"
-                            onClick={() => setAmount(amt)}
-                            className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${
-                                amount === amt
-                                    ? "bg-blue-600 text-white border-blue-500"
-                                    : "bg-[#1A2433] text-gray-300 border-gray-700 hover:bg-[#2A3444]"
-                            }`}
-                        >
-                          {amt} USDT
-                        </button>
-                    ))}
-                  </div>
+                <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
+                    placeholder="Or enter a custom amount"
+                    className="w-full p-3 rounded-lg bg-[#0F172A] border border-gray-700 text-white"
+                />
+              </div>
 
-                  <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(Number(e.target.value))}
-                      placeholder="Or enter a custom amount"
-                      className="p-4 w-full rounded-lg bg-[#0A1128] border border-gray-700 text-white"
-                  />
-
-                  {/* BEP Address Input */}
-                  <div className="mb-4">
-                    <label className="text-sm text-gray-400 mb-2 block">BEP Address</label>
-
-                  </div>
-
-                </div>
-
+              {/* BEP Address */}
+              <div className="mb-6">
+                <label className="text-sm text-gray-300 mb-2 block">BEP Address</label>
                 <div className="flex gap-2">
                   <input
                       type="text"
                       value={bepAddress}
                       onChange={(e) => setBepAddress(e.target.value)}
-                      placeholder="Enter your BEP address"
-                      className="p-4 flex-1 rounded-lg bg-[#0A1128] border border-gray-700 text-white"
+                      placeholder="Enter BEP address"
+                      className="flex-1 p-3 rounded-lg bg-[#0F172A] border border-gray-700 text-white"
                   />
                   <Button
                       type="button"
                       onClick={() => {
                         if (user?.bep_address) {
                           setBepAddress(user.bep_address);
-                          toast.success("BEP address auto-filled from your profile.");
+                          toast.success("BEP address auto-filled.");
                         } else {
                           toast.warn("No BEP address found in your profile.");
                         }
@@ -182,26 +163,27 @@ export default function AskPage() {
                     Auto Fill
                   </Button>
                 </div>
-                {/* Notice about allowed times */}
-                <div className="text-yellow-400 text-sm text-center mb-4">
-                  Ask requests are only allowed between 9:00–9:30 AM and 9:00–9:30 PM.
-                </div>
-
-                {/* Submit Button */}
-                <Button
-                    onClick={handleAskRequest}
-                    disabled={loading}
-                    className="w-full py-3 text-lg"
-                >
-                  {loading ? "Processing..." : "Submit Ask Request"}
-                </Button>
-
-                {askSuccess && (
-                    <p className="text-green-500 mt-4 text-center">
-                      Your ask request has been created successfully!
-                    </p>
-                )}
               </div>
+
+              {/* Time Notice */}
+              <div className="text-center text-yellow-400 text-sm mb-6">
+                Ask requests are only allowed between 9:00–9:30 AM and 9:00–9:30 PM.
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                  onClick={handleAskRequest}
+                  disabled={loading}
+                  className="w-full py-3 text-lg font-semibold"
+              >
+                {loading ? "Processing..." : "Submit Ask Request"}
+              </Button>
+
+              {askSuccess && (
+                  <p className="text-green-500 mt-4 text-center font-medium">
+                    Your ask request has been created successfully!
+                  </p>
+              )}
             </div>
           </main>
         </div>
