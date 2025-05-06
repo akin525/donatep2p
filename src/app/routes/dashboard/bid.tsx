@@ -4,6 +4,7 @@ import DashboardHeader from "../../../components/DashboardHeader";
 import Sidebar from "../../../components/Sidebar";
 import { getAuthToken } from "@/utils/auth";
 import { toast } from "react-toastify";
+import { useUser } from "@/context/UserContext.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
@@ -19,14 +20,13 @@ interface Plan {
 
 export default function CreateBid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    amount: "",
-  });
+  const [formData, setFormData] = useState({ amount: "" });
   const [plan, setPlan] = useState<Plan | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [canBid, setCanBid] = useState(false);
   const [countdown, setCountdown] = useState<string>("");
+  // const { user } = useUser();
 
   useEffect(() => {
     if (!token || !baseUrl) return;
@@ -71,16 +71,19 @@ export default function CreateBid() {
 
     const calculateCountdown = () => {
       const now = new Date();
-      let nextBidTime = new Date(now);
+      let nextBidTime = new Date();
 
-      if (now.getHours() < 9 || (now.getHours() === 9 && now.getMinutes() > 30)) {
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      if (hour < 9 || (hour === 9 && minute > 30)) {
         nextBidTime.setHours(21, 0, 0, 0);
-        if (now.getHours() > 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
-          nextBidTime.setDate(now.getDate() + 1);
-          nextBidTime.setHours(9, 0, 0, 0);
-        }
-      } else if (now.getHours() < 21 || (now.getHours() === 21 && now.getMinutes() > 30)) {
+      } else if (hour < 21 || (hour === 21 && minute > 30)) {
         nextBidTime.setHours(21, 0, 0, 0);
+      } else {
+        // After 9:30 PM, set to next day's 9:00 AM
+        nextBidTime.setDate(now.getDate() + 1);
+        nextBidTime.setHours(9, 0, 0, 0);
       }
 
       const diffMs = nextBidTime.getTime() - now.getTime();
@@ -89,9 +92,9 @@ export default function CreateBid() {
       const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
       setCountdown(
-          `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+          `${hours.toString().padStart(2, "0")}:${minutes
               .toString()
-              .padStart(2, "0")}`
+              .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
       );
     };
 
@@ -119,7 +122,7 @@ export default function CreateBid() {
     e.preventDefault();
 
     if (!canBid) {
-      toast.error("Bidding is only allowed between 9:00-9:30 AM and 9:00-9:30 PM");
+      toast.error("Bidding is only allowed between 9:00–9:30 AM and 9:00–9:30 PM");
       return;
     }
 
@@ -219,7 +222,6 @@ export default function CreateBid() {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Amount Selection */}
                 {plan && (
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -260,12 +262,9 @@ export default function CreateBid() {
                   />
                 </div>
 
-                {/* Countdown Timer */}
                 {!canBid && (
                     <div className="text-center mb-4">
-                      <p className="text-gray-400 text-sm mb-2">
-                        Next Bidding Window Opens In:
-                      </p>
+                      <p className="text-gray-400 text-sm mb-2">Next Bidding Window Opens In:</p>
                       <div className="text-pink-500 text-2xl font-bold tracking-widest">
                         {countdown}
                       </div>

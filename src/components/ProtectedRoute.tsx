@@ -68,7 +68,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                             telegramchannel: settingsData?.data?.telegram_channel || null,
                             telegramgroup: settingsData?.data?.telegram_group || null,
                             timeopening: settingsData?.data?.opening_time || null,
-                            timeclosiung: settingsData?.data?.closing_time || null,
+                            timeclosing: settingsData?.data?.closing_time || null,
                         });
 
                         setIsValid(true);

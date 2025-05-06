@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { getAuthToken } from "@/utils/auth";
 import { useUser } from "@/context/UserContext.tsx";
 import DashboardHeader from "@/components/DashboardHeader";
@@ -21,14 +21,19 @@ export default function AskPage() {
   const [bepAddress, setBepAddress] = useState("");
 
   const handleAskRequest = async () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinutes = now.getMinutes();
-    const isValidTime =
-        (currentHour === 9 || currentHour === 21) && currentMinutes <= 30;
+    if (!user?.timeopening || !user?.timeclosing) {
+      toast.error("Opening and closing times are not set.");
+      return;
+    }
 
-    if (!isValidTime) {
-      toast.error("Ask requests are allowed only between 9:00–9:30 AM and 9:00–9:30 PM.");
+    const now = new Date();
+    const openingTime = new Date(user.timeopening);
+    const closingTime = new Date(user.timeclosing);
+
+    if (now < openingTime || now > closingTime) {
+      toast.error(
+          `Ask requests are allowed only between ${user.timeopening} and ${user.timeclosing}.`
+      );
       return;
     }
 
@@ -61,12 +66,6 @@ export default function AskPage() {
       setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   if (user?.bep_address) {
-  //     setBepAddress(user.bep_address);
-  //   }
-  // }, [user]);
 
   const amountOptions = generateAmountOptions();
 
@@ -166,9 +165,11 @@ export default function AskPage() {
               </div>
 
               {/* Time Notice */}
-              <div className="text-center text-yellow-400 text-sm mb-6">
-                Ask requests are only allowed between 9:00–9:30 AM and 9:00–9:30 PM.
-              </div>
+              {user?.timeopening && user?.timeclosing && (
+                  <div className="text-center text-yellow-400 text-sm mb-6">
+                    Ask requests are only allowed between {user.timeopening} and {user.timeclosing}.
+                  </div>
+              )}
 
               {/* Submit Button */}
               <Button

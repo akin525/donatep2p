@@ -35,7 +35,7 @@ interface User {
   ref_code: string;
   referral: string;
   timeopening: string;
-  timeclosiung: string;
+  timeclosing: string;
   status: string;
   bep_address: string | null;
   telegram_otp?: string;
