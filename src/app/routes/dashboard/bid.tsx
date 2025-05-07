@@ -4,7 +4,7 @@ import DashboardHeader from "../../../components/DashboardHeader";
 import Sidebar from "../../../components/Sidebar";
 import { getAuthToken } from "@/utils/auth";
 import { toast } from "react-toastify";
-import { useUser } from "@/context/UserContext.tsx";
+// import { useUser } from "@/context/UserContext.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
