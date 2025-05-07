@@ -118,7 +118,9 @@ export default function RegisterPage() {
           <div className="w-full max-w-4xl">
             <div className="text-center mb-8">
               <Link to="/" className="inline-block">
-                <img src="/logo.png" alt="TL Logo" width={120} height={60} className="h-16 w-auto mx-auto"/>
+                <h4 className="text-center font-gothic">
+                  SMART <span className="text-primary font-gothic"> P2P</span> CIRCLE
+                </h4>
               </Link>
               <h1 className="text-2xl font-bold mt-6 mb-2">Create Your Account</h1>
               <p className="text-gray-400">Join TradeLink Trading and start trading cryptocurrencies</p>

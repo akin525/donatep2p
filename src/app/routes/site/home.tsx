@@ -31,7 +31,7 @@ export function Header() {
       <header className="flex items-center px-5 h-20 fixed top-0 z-50 backdrop-blur-sm w-full">
         <div className="flex items-center justify-between w-full md:container h-full mx-auto">
           <div className="flex items-center">
-            <p className="font-bold text-3xl">DonateP2P</p>
+            <p className="font-bold text-3xl">SMART P2P CIRCLE</p>
           </div>
 
           <nav className="hidden md:flex items-center gap-6">
@@ -68,6 +68,7 @@ export default function Home() {
         <Header />
 
         <HeroSection />
+        <HowItWorksSection/>
 
         <WhatIsSection />
 
@@ -104,11 +105,11 @@ const HeroSection = () => {
             <p className="text-lg sm:text-xl md:text-2xl font-bold">
               INTRODUCING
             </p>
-            <h2 className="font-gothic text-5xl sm:text-7xl md:text-8xl lg:text-[128px] xl:text-[160px] lg:leading-[140px]">
-              Donate<span className="text-primary font-gothic">P2P</span>
+            <h2 className="font-gothic text-5xl sm:text-7xl md:text-8xl text-center">
+              SMART P2P<span className="text-primary font-gothic"> CIRCLE</span>
             </h2>
             <p className="max-w-4xl text-lg md:text-2xl text-center">
-              Trade All Assets Through Peer-To-Peer (P2P) Easier Than Ever
+              The Future of Wealth is Peer-to-Peer
             </p>
 
             <div className="flex flex-col w-full sm:w-max sm:flex-row items-center gap-6 mt-10">
@@ -139,8 +140,8 @@ const HeroSection = () => {
           {Array.from({ length: 20 }).map((_, index) => {
             return (
               <p key={index} className="mx-4 text-base sm:text-xl font-bold">
-                <span className="mx-4">$TL</span>
-                <span className="mx-4">TradeLink</span>
+                {/*<span className="mx-4">$TL</span>*/}
+                <span className="mx-4">No Recommitment. 100% Transparency. 200% Returns in 14 Days.</span>
               </p>
             );
           })}
@@ -162,19 +163,17 @@ const WhatIsSection = () => {
               </span>
             </div>
             <span className="text-primary text-sm sm:text-base uppercase font-medium">
-              WHAT IS TradeLink
+              Welcome to SPC (Smart P2P Circle),
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-            Trade All Assets Through Peer-To-Peer (P2P) Easier Than Ever
+            The world's first community-driven bid & ask system powered by Web3
           </h1>
 
           <p className="text-muted-foreground text-sm lg:text-base mb-8 max-w-lg">
-            TradeLink (TL) is a peer-to-peer digital asset trading and exchange
-            platform that seizes all opportunities in the crypto world by acting
-            as an intermediary between a seller of a digital asset (coin or
-            token) and his corresponding buyer.
+
+            smart contracts, and the reliability of USDT on Binance Smart Chain.
           </p>
 
           <Link to="/dashboard">
@@ -221,15 +220,12 @@ const P2PSection = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              Trade New Assets Via A Decentralized Platform
+              In a world filled with broken promises and endless cycles, SPC offers you a transparent, decentralized, and profitable alternative. No recommitment. No hidden rules. Just clean, smart earning.
             </h2>
 
-            <p className="text-gray-400 text-sm sm:text-base mb-8">
-              Our platform enables secure, transparent, and efficient
-              peer-to-peer trading of digital assets without the need for
-              intermediaries, giving you complete control over your
-              transactions.
-            </p>
+            {/*<p className="text-gray-400 text-sm sm:text-base mb-8">*/}
+
+            {/*</p>*/}
 
             <Link
               to="#learn-more"
@@ -322,7 +318,7 @@ function ServicesSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
-            TradeLink Trading offers a comprehensive suite of services to meet
+            SMART P2P CIRCLE Trading offers a comprehensive suite of services to meet
             all your cryptocurrency trading needs.
           </p>
         </div>
@@ -381,7 +377,7 @@ function FeaturesSection() {
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-            Why Choose TradeLink Trading Platform
+            Why Choose SMART P2P CIRCLE Trading Platform
           </h2>
 
           <p className="text-gray-400 text-sm sm:text-base  mb-8">
@@ -414,9 +410,9 @@ function FeaturesSection() {
 function FAQSection() {
   const faqs = [
     {
-      question: "What is TradeLink Trading (TL)?",
+      question: "What is SMART P2P CIRCLE Trading (TL)?",
       answer:
-        "TradeLink Trading (TL) is a peer-to-peer digital asset trading and exchange platform that acts as an intermediary between sellers and buyers of digital assets (coins or tokens). Our platform enables secure, transparent, and efficient trading without traditional intermediaries.",
+        "SMART P2P CIRCLE Trading (TL) is a peer-to-peer digital asset trading and exchange platform that acts as an intermediary between sellers and buyers of digital assets (coins or tokens). Our platform enables secure, transparent, and efficient trading without traditional intermediaries.",
     },
     {
       question: "How does P2P trading work?",
@@ -426,27 +422,27 @@ function FAQSection() {
     {
       question: "What cryptocurrencies can I trade on TL?",
       answer:
-        "TradeLink Trading supports a wide range of cryptocurrencies including Bitcoin (BTC), Ethereum (ETH), Tether (USDT), Binance Coin (BNB), and many other popular altcoins. We regularly add support for new cryptocurrencies based on market demand and community feedback.",
+        "SMART P2P CIRCLE Trading supports a wide range of cryptocurrencies including Bitcoin (BTC), Ethereum (ETH), Tether (USDT), Binance Coin (BNB), and many other popular altcoins. We regularly add support for new cryptocurrencies based on market demand and community feedback.",
     },
     {
-      question: "Is TradeLink Trading secure?",
+      question: "Is SMART P2P CIRCLE Trading secure?",
       answer:
         "Yes, security is our top priority. We implement industry-standard security measures including two-factor authentication (2FA), advanced encryption for all data, cold storage for the majority of assets, and regular security audits. Additionally, our escrow system protects both buyers and sellers during transactions.",
     },
     {
       question: "What are the fees for trading on TL?",
       answer:
-        "TradeLink Trading charges a small fee for each successful transaction, typically ranging from 0.1% to 0.5% depending on the trading volume and user tier. We do not charge any deposit fees, and withdrawal fees vary depending on the cryptocurrency network. You can view our complete fee schedule in your account dashboard.",
+        "SMART P2P CIRCLE Trading charges a small fee for each successful transaction, typically ranging from 0.1% to 0.5% depending on the trading volume and user tier. We do not charge any deposit fees, and withdrawal fees vary depending on the cryptocurrency network. You can view our complete fee schedule in your account dashboard.",
     },
     {
-      question: "How do I get started with TradeLink Trading?",
+      question: "How do I get started with SMART P2P CIRCLE Trading?",
       answer:
         "Getting started is simple: 1) Create an account by clicking the 'Sign Up' button, 2) Complete the verification process to secure your account, 3) Deposit funds or cryptocurrencies into your wallet, and 4) Start trading! Our intuitive interface makes it easy for both beginners and experienced traders.",
     },
     {
       question: "What payment methods are supported?",
       answer:
-        "TradeLink Trading supports various payment methods including bank transfers, credit/debit cards, PayPal, and other popular online payment services. Available payment methods may vary by region and are determined by the sellers' preferences when listing their assets.",
+        "SMART P2P CIRCLE Trading supports various payment methods including bank transfers, credit/debit cards, PayPal, and other popular online payment services. Available payment methods may vary by region and are determined by the sellers' preferences when listing their assets.",
     },
     {
       question: "How long do transactions take to complete?",
@@ -463,7 +459,7 @@ function FAQSection() {
             Frequently Asked Questions
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base max-w-sm mx-auto">
-            Find answers to the most common questions about TradeLink Trading
+            Find answers to the most common questions about SMART P2P CIRCLE Trading
             and our P2P platform.
           </p>
         </div>
@@ -490,7 +486,7 @@ function FAQSection() {
 const footerData = {
   companyInfo: {
     description:
-      "TradeLink Trading is a peer-to-peer digital asset trading and exchange platform that connects buyers and sellers worldwide.",
+      "SMART P2P CIRCLE Trading is a peer-to-peer digital asset trading and exchange platform that connects buyers and sellers worldwide.",
   },
   quickLinks: [
     { label: "Home", href: "#" },
@@ -514,7 +510,7 @@ const footerData = {
     buttonText: "Subscribe",
   },
   footerBottom: {
-    copyright: `© ${new Date().getFullYear()} TradeLink Trading. All rights reserved.`,
+    copyright: `© ${new Date().getFullYear()} SMART P2P CIRCLE Trading. All rights reserved.`,
     additionalLinks: ["Support", "Security", "Careers"],
   },
 };
@@ -527,7 +523,7 @@ function Footer() {
           {/* Company Info */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center">
-              <p className="font-bold text-3xl">tradelink</p>
+              <p className="font-bold text-3xl">SMART P2P CIRCLE</p>
             </div>
             <p className="text-gray-400 mb-4 max-w-sm">
               {footerData.companyInfo.description}
@@ -580,3 +576,59 @@ function Footer() {
     </footer>
   );
 }
+
+const HowItWorksSection = () => {
+  const steps = [
+    {
+      title: "Register Your Account",
+      description:
+          "Sign up in seconds with your email or wallet. No complex verifications, just your commitment to the circle.",
+      icon: "📝",
+    },
+    {
+      title: "Fund Your Wallet",
+      description:
+          "Deposit USDT (BEP-20) directly into your secure wallet. All funds are held in decentralized smart contracts.",
+      icon: "💰",
+    },
+    {
+      title: "Bid to Join a Circle",
+      description:
+          "Place a bid to be matched with others in the community. Your bid starts your earning cycle.",
+      icon: "🔄",
+    },
+    {
+      title: "Earn & Withdraw",
+      description:
+          "Watch your funds grow by 200% in 14 days. Withdraw anytime with zero recommitments or penalties.",
+      icon: "📈",
+    },
+  ];
+
+  return (
+      <section className="py-20 bg-[#0f0f0f] text-white" id="how-it-works">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">How It Works</h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Getting started with Smart P2P Circle is quick, secure, and designed for your success.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {steps.map((step, index) => (
+                <div
+                    key={index}
+                    className="bg-[#1a1a1a] p-6 rounded-2xl border border-gray-700 hover:border-primary transition duration-300 shadow-lg hover:shadow-xl"
+                >
+                  <div className="text-4xl mb-4">{step.icon}</div>
+                  <h3 className="text-xl font-semibold mb-2 text-white">{`${index + 1}. ${step.title}`}</h3>
+                  <p className="text-gray-400 text-sm">{step.description}</p>
+                </div>
+            ))}
+          </div>
+        </div>
+      </section>
+  );
+};
+
