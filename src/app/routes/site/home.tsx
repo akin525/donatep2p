@@ -585,22 +585,23 @@ const HowItWorksSection = () => {
           "Sign up in seconds with your email or wallet. No complex verifications, just your commitment to the circle.",
       icon: "📝",
     },
-    {
-      title: "Fund Your Wallet",
-      description:
-          "Deposit USDT (BEP-20) directly into your secure wallet. All funds are held in decentralized smart contracts.",
-      icon: "💰",
-    },
+
     {
       title: "Bid to Join a Circle",
       description:
-          "Place a bid to be matched with others in the community. Your bid starts your earning cycle.",
+          "You bid – starting from just $10 to $300 USDT (BEP20) – and in 14 days, you get paired to ask and receive double your bid. Bid $10, get $20. Bid $ 50, get $100. Big $200, get $ 400. Bid $300, get $600. Simple.",
       icon: "🔄",
     },
     {
-      title: "Earn & Withdraw",
+      title: "Earn",
       description:
-          "Watch your funds grow by 200% in 14 days. Withdraw anytime with zero recommitments or penalties.",
+          "And it gets even better – you earn 7.5% every time your referrals bid again. That’s residual income, automated by a smart contract, sent directly to your wallet, with no third-party interference.",
+      icon: "💰",
+    },
+    {
+      title: "Notification & Ai",
+      description:
+          "Plus, our Smart AI Telegram bot keeps you in control 24/7 — sending real-time updates, pairing info, and payment notifications.",
       icon: "📈",
     },
   ];
