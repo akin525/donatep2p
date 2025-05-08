@@ -1,10 +1,11 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { getAuthToken } from "@/utils/auth";
 import { useUser } from "@/context/UserContext.tsx";
 import DashboardHeader from "@/components/DashboardHeader";
 import Sidebar from "@/components/Sidebar";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
+import MaintenancePage from "@/app/routes/dashboard/MaintenancePage.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
@@ -17,9 +18,70 @@ export default function AskPage() {
   const [balSource, setBalSource] = useState("balance");
   const [loading, setLoading] = useState(false);
   const [askSuccess, setAskSuccess] = useState(false);
+  const [ask, setAsk] = useState(false);
   const { user } = useUser();
   const [bepAddress, setBepAddress] = useState("");
+  const [countdown, setCountdown] = useState<string>("");
 
+
+  useEffect(() => {
+    const checkBidTime = () => {
+      if (!user?.timeopening || !user?.timeclosing) return;
+
+      const now = new Date();
+      const openingTime = new Date(user.timeopening).getTime();
+      const closingTime = new Date(user.timeclosing).getTime();
+      const currentTime = now.getTime();
+
+      setAsk(currentTime >= openingTime && currentTime <= closingTime);
+    };
+
+    const calculateCountdown = () => {
+      if (!user?.timeopening || !user?.timeclosing) return;
+
+      const now = new Date();
+      const openingTime = new Date(user.timeopening);
+      const closingTime = new Date(user.timeclosing);
+
+      let targetTime = openingTime;
+
+      if (now.getTime() > closingTime.getTime()) {
+        targetTime = new Date(openingTime);
+        targetTime.setDate(targetTime.getDate() + 1);
+      }
+
+      const diffMs = targetTime.getTime() - now.getTime();
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      setCountdown(
+          `${hours.toString().padStart(2, "0")}:${minutes
+              .toString()
+              .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+      );
+    };
+
+    checkBidTime();
+    calculateCountdown();
+
+    const interval = setInterval(() => {
+      checkBidTime();
+      calculateCountdown();
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [user?.timeopening, user?.timeclosing]);
+
+  const now = new Date();
+  const openingTime = new Date(user?.timeopening || "");
+  const closingTime = new Date(user?.timeclosing || "");
+  const outsideTimeRange = now < openingTime || now > closingTime;
+  const page = "Ask Not Open";
+  const tittle = "asks";
+  if (!user?.timeopening || !user?.timeclosing || outsideTimeRange) {
+    return <MaintenancePage countdown={countdown} page={page} tittle={tittle} />;
+  }
   const handleAskRequest = async () => {
     if (!user?.timeopening || !user?.timeclosing) {
       toast.error("Opening and closing times are not set.");
@@ -168,6 +230,14 @@ export default function AskPage() {
               {user?.timeopening && user?.timeclosing && (
                   <div className="text-center text-yellow-400 text-sm mb-6">
                     Ask requests are only allowed between {user.timeopening} and {user.timeclosing}.
+                  </div>
+              )}
+              {!ask && (
+                  <div className="text-center mb-4">
+                    <p className="text-gray-400 text-sm mb-2"> Ask requests  Opens In:</p>
+                    <div className="text-yellow-500 text-2xl font-bold tracking-widest">
+                      {countdown}
+                    </div>
                   </div>
               )}
 

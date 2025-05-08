@@ -1,9 +1,13 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import { useNavigate } from "react-router";
 import Sidebar from "@/components/Sidebar.tsx";
 import DashboardHeader from "@/components/DashboardHeader.tsx";
-
-export default function MaintenancePage({ countdown, page, tittle }) {
+interface MaintenancePageProps {
+    countdown: any;
+    page: string;
+    tittle: string;
+}
+export default function MaintenancePage({ countdown, page, tittle }: MaintenancePageProps) {
     const navigate = useNavigate();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
