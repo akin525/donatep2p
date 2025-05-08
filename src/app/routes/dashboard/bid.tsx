@@ -4,10 +4,8 @@ import DashboardHeader from "../../../components/DashboardHeader";
 import Sidebar from "../../../components/Sidebar";
 import { getAuthToken } from "@/utils/auth";
 import { toast } from "react-toastify";
-// import { useUser } from "@/context/UserContext.tsx";
-
-const baseUrl = import.meta.env.VITE_API_BASE_URL;
-const token = getAuthToken();
+import { useUser } from "@/context/UserContext.tsx";
+import MaintenancePage from "@/app/routes/dashboard/MaintenancePage.tsx";
 
 interface Plan {
   id: number;
@@ -18,6 +16,8 @@ interface Plan {
   interest_type: string;
 }
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export default function CreateBid() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({ amount: "" });
@@ -26,7 +26,9 @@ export default function CreateBid() {
   const [submitting, setSubmitting] = useState(false);
   const [canBid, setCanBid] = useState(false);
   const [countdown, setCountdown] = useState<string>("");
-  // const { user } = useUser();
+
+  const { user } = useUser();
+  const token = getAuthToken();
 
   useEffect(() => {
     if (!token || !baseUrl) return;
@@ -59,34 +61,31 @@ export default function CreateBid() {
 
   useEffect(() => {
     const checkBidTime = () => {
+      if (!user?.timeopening || !user?.timeclosing) return;
+
       const now = new Date();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
+      const openingTime = new Date(user.timeopening).getTime();
+      const closingTime = new Date(user.timeclosing).getTime();
+      const currentTime = now.getTime();
 
-      const isMorningBidTime = hour === 9 && minute >= 0 && minute <= 30;
-      const isEveningBidTime = hour === 21 && minute >= 0 && minute <= 30;
-
-      setCanBid(isMorningBidTime || isEveningBidTime);
+      setCanBid(currentTime >= openingTime && currentTime <= closingTime);
     };
 
     const calculateCountdown = () => {
+      if (!user?.timeopening || !user?.timeclosing) return;
+
       const now = new Date();
-      let nextBidTime = new Date();
+      const openingTime = new Date(user.timeopening);
+      const closingTime = new Date(user.timeclosing);
 
-      const hour = now.getHours();
-      const minute = now.getMinutes();
+      let targetTime = openingTime;
 
-      if (hour < 9 || (hour === 9 && minute > 30)) {
-        nextBidTime.setHours(21, 0, 0, 0);
-      } else if (hour < 21 || (hour === 21 && minute > 30)) {
-        nextBidTime.setHours(21, 0, 0, 0);
-      } else {
-        // After 9:30 PM, set to next day's 9:00 AM
-        nextBidTime.setDate(now.getDate() + 1);
-        nextBidTime.setHours(9, 0, 0, 0);
+      if (now.getTime() > closingTime.getTime()) {
+        targetTime = new Date(openingTime);
+        targetTime.setDate(targetTime.getDate() + 1);
       }
 
-      const diffMs = nextBidTime.getTime() - now.getTime();
+      const diffMs = targetTime.getTime() - now.getTime();
       const hours = Math.floor(diffMs / (1000 * 60 * 60));
       const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
@@ -107,7 +106,18 @@ export default function CreateBid() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [user?.timeopening, user?.timeclosing]);
+
+  const now = new Date();
+  const openingTime = new Date(user?.timeopening || "");
+  const closingTime = new Date(user?.timeclosing || "");
+  const outsideTimeRange = now < openingTime || now > closingTime;
+  const page = "Bidding Not Open";
+  const tittle = "bids";
+  if (!user?.timeopening || !user?.timeclosing || outsideTimeRange) {
+    return <MaintenancePage countdown={countdown} page={page} tittle={tittle} />;
+  }
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -122,7 +132,7 @@ export default function CreateBid() {
     e.preventDefault();
 
     if (!canBid) {
-      toast.error("Bidding is only allowed between 9:00–9:30 AM and 9:00–9:30 PM");
+      toast.error("Bidding is only allowed during the active time window.");
       return;
     }
 
@@ -202,12 +212,10 @@ export default function CreateBid() {
                         <p className="text-gray-400 mb-1">Minimum</p>
                         <p className="text-pink-400 text-lg font-semibold">{plan.minimum} USDT</p>
                       </div>
-
                       <div className="bg-[#141A31] p-4 rounded-lg border border-gray-700">
                         <p className="text-gray-400 mb-1">Maximum</p>
                         <p className="text-pink-400 text-lg font-semibold">{plan.maximum} USDT</p>
                       </div>
-
                       <div className="bg-[#141A31] p-4 rounded-lg border border-gray-700">
                         <p className="text-gray-400 mb-1">Return</p>
                         <p className="text-pink-400 text-lg font-semibold">
@@ -246,7 +254,6 @@ export default function CreateBid() {
                     </div>
                 )}
 
-                {/* Custom Amount Input */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300">
                     Or enter custom amount
