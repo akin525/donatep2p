@@ -42,7 +42,7 @@ export default function Sidebar({
             >
                 <div className="flex items-center justify-between h-16 px-6 border-b border-gray-800">
                     <Link to="/" className="flex items-center">
-                        <p className="font-bold text-3xl">DonateP2P</p>
+                        <p className="font-bold">SMART P2P CIRCLE</p>
                     </Link>
                     <button
                         onClick={() => setSidebarOpen(false)}

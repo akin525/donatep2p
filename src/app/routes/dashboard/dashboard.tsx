@@ -127,12 +127,12 @@ export default function Dashboard() {
 
                             {/* P2P Donations */}
                             <div className="mt-12">
-                                <h2 className="text-2xl font-semibold text-white mb-4">P2P Donations</h2>
+                                <h2 className="text-2xl font-semibold text-white mb-4">P2P Circle</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {/* Bid Card */}
                                     <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
                                         <div className="flex items-center justify-between mb-2">
-                                            <h3 className="text-lg font-medium text-white">Bid for Donation</h3>
+                                            <h3 className="text-lg font-medium text-white">Bid for Smart</h3>
                                             <HandHeart className="text-pink-400 w-5 h-5" />
                                         </div>
                                         <p className="text-sm text-gray-400 mb-4">
@@ -149,11 +149,11 @@ export default function Dashboard() {
                                     {/* Ask Card */}
                                     <div className="bg-[#070D20] p-6 rounded-xl border border-gray-800 shadow hover:shadow-lg transition">
                                         <div className="flex items-center justify-between mb-2">
-                                            <h3 className="text-lg font-medium text-white">Ask to Donate</h3>
+                                            <h3 className="text-lg font-medium text-white">Ask to Smart</h3>
                                             <HandCoins className="text-green-400 w-5 h-5" />
                                         </div>
                                         <p className="text-sm text-gray-400 mb-4">
-                                            Donate to active community bids and support users in need.
+                                            SMART P2P CIRCLE to active community bids and support users in need.
                                         </p>
                                         <Link
                                             to="/ask"
