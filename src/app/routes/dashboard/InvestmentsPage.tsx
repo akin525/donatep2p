@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAuthToken } from "@/utils/auth.tsx";
 import Sidebar from "@/components/Sidebar.tsx";
 import DashboardHeader from "@/components/DashboardHeader.tsx";
+import {useNavigate} from "react-router";
 
 interface Investment {
     id: number;
@@ -22,6 +23,7 @@ export default function InvestmentsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchInvestments = async () => {
@@ -80,7 +82,8 @@ export default function InvestmentsPage() {
                             {investments.map((inv) => (
                                 <div
                                     key={inv.id}
-                                    className="bg-[#1F2937] border border-gray-700 rounded-xl p-5 shadow-lg hover:shadow-2xl transition"
+                                    onClick={() => navigate(`/investments/${inv.id}`)}
+                                    className="cursor-pointer bg-[#1F2937] border border-gray-700 rounded-xl p-5 shadow-lg hover:shadow-2xl transition"
                                 >
                                     <div className="mb-3">
                                         <p className="text-sm text-gray-400">Reference:</p>

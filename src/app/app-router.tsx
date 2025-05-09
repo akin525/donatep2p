@@ -21,6 +21,7 @@ import AskDetail from "@/app/routes/dashboard/AskDetail.tsx";
 import ReferralPage from "@/app/routes/dashboard/Referral.tsx";
 import BidStatusSearch from "@/app/routes/dashboard/BidStatusSearch.tsx";
 import InvestmentsPage from "@/app/routes/dashboard/InvestmentsPage.tsx";
+import InvestmentDetails from "@/app/routes/dashboard/InvestmentDetails.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -112,6 +113,15 @@ export const router = createBrowserRouter([
     Component: () => (
         <ProtectedRoute>
           <BidDetail/>
+        </ProtectedRoute>
+    ),
+  },
+    {
+
+    path: "/investments/:id",
+    Component: () => (
+        <ProtectedRoute>
+          <InvestmentDetails/>
         </ProtectedRoute>
     ),
   },
