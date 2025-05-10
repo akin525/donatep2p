@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import Marquee from "react-fast-marquee";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+import pic from "@/assets/SMART P2P CIRCLE FLYER@3x-2.png"
+import pic1 from "@/assets/SMART P2P CIRCLE FLYER 2 @3x.png"
 import {
   Accordion,
   AccordionContent,
@@ -177,63 +178,77 @@ const HeroSection = () => {
 
 const WhatIsSection = () => {
   return (
-    <section className="px-4 py-16 md:py-24">
-      <div className="container mx-auto justify-center flex gap-8 flex-col w-full lg:flex-row items-center ">
-        <div className="lg:w-1/2 mb-10 md:mb-0">
-          <div className="flex items-center mb-4">
-            <div className="bg-primary rounded-full size-6 sm:size-8 flex items-center justify-center mr-2">
-              <span className="text-white text-xs sm:text-base font-bold">
-                !
-              </span>
+      <section className="px-4 py-16 md:py-24">
+        <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-center gap-12">
+
+          {/* Text Section */}
+          <div className="lg:w-1/2 w-full text-center lg:text-left">
+            <div className="flex items-center justify-center lg:justify-start mb-4">
+              <div className="bg-primary rounded-full size-6 sm:size-8 flex items-center justify-center mr-2">
+                <span className="text-white text-xs sm:text-base font-bold">!</span>
+              </div>
+              <span className="text-primary text-sm sm:text-base uppercase font-medium">
+            Welcome to SPC (Smart P2P Circle),
+          </span>
             </div>
-            <span className="text-primary text-sm sm:text-base uppercase font-medium">
-              Welcome to SPC (Smart P2P Circle),
-            </span>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              The world's first community-driven bid & ask system powered by Web3
+            </h1>
+
+            <p className="text-muted-foreground text-sm lg:text-base mb-8 max-w-lg mx-auto lg:mx-0">
+              Smart contracts, and the reliability of USDT on Binance Smart Chain.
+            </p>
+
+            <Link to="/dashboard">
+              <Button size="lg" className="inline-flex items-center">
+                BID NOW
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="ml-2"
+                >
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </Button>
+            </Link>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-            The world's first community-driven bid & ask system powered by Web3
-          </h1>
-
-          <p className="text-muted-foreground text-sm lg:text-base mb-8 max-w-lg">
-
-            smart contracts, and the reliability of USDT on Binance Smart Chain.
-          </p>
-
-          <Link to="/dashboard">
-            <Button size={"lg"}>
-              BID NOW
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-2"
-              >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </Button>
-          </Link>
+          {/* Image Section */}
+          <div className="lg:w-1/2 w-full relative rounded-3xl overflow-hidden shadow-lg">
+            <img
+                src={pic}
+                alt="SPC Illustration"
+                className="w-full h-full object-cover"
+            />
+          </div>
         </div>
-
-        <div className="lg:w-1/2 relative min-h-[400px] w-full aspect-video bg-primary/5 rounded-4xl"></div>
-      </div>
-    </section>
+      </section>
   );
+
 };
 
 const P2PSection = () => {
   return (
     <>
       <section className="min-h-[600px] px-4 py-20 md:py-24">
-        <div className="container w-full  flex items-center lg:flex-row flex-col gap-8 justify-center mx-auto overflow-hidden">
-          <div className="lg:w-1/2 relative min-h-[400px] w-full aspect-video bg-primary/5 rounded-4xl"></div>
+        <div
+            className="container w-full  flex items-center lg:flex-row flex-col gap-8 justify-center mx-auto overflow-hidden">
+          <div className="lg:w-1/2 w-full relative rounded-3xl overflow-hidden shadow-lg">
+            <img
+                src={pic1}
+                alt="SPC Illustration"
+                className="w-full h-full object-cover"
+            />
+          </div>
 
           <div className="lg:w-1/2 lg:pl-12">
             <div className="mb-4">
@@ -244,7 +259,8 @@ const P2PSection = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              In a world filled with broken promises and endless cycles, SPC offers you a transparent, decentralized, and profitable alternative. No recommitment. No hidden rules. Just clean, smart earning.
+              In a world filled with broken promises and endless cycles, SPC offers you a transparent, decentralized,
+              and profitable alternative. No recommitment. No hidden rules. Just clean, smart earning.
             </h2>
 
             {/*<p className="text-gray-400 text-sm sm:text-base mb-8">*/}
@@ -252,24 +268,24 @@ const P2PSection = () => {
             {/*</p>*/}
 
             <Link
-              to="#learn-more"
-              className="text-primary text-sm sm:text-base inline-flex items-center hover:underline"
+                to="#learn-more"
+                className="text-primary text-sm sm:text-base inline-flex items-center hover:underline"
             >
               Learn more
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="ml-2"
               >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                <path d="M5 12h14"/>
+                <path d="m12 5 7 7-7 7"/>
               </svg>
             </Link>
           </div>
@@ -282,10 +298,10 @@ const P2PSection = () => {
 function ServicesSection() {
   const services = [
     {
-      icon: <Bitcoin className="text-primary h-7 w-7" />,
+      icon: <Bitcoin className="text-primary h-7 w-7"/>,
       title: "P2P Cryptocurrency Trading",
       description:
-        "Trade Bitcoin, Ethereum, and other cryptocurrencies directly with other users through our secure peer-to-peer platform.",
+          "Trade Bitcoin, Ethereum, and other cryptocurrencies directly with other users through our secure peer-to-peer platform.",
     },
     {
       icon: <Wallet className="text-primary h-7 w-7" />,
