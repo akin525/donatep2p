@@ -24,6 +24,8 @@ import {
   Coins,
   CheckCircle,
 } from "lucide-react";
+import {FaArrowCircleUp, FaDownload, FaRobot} from "react-icons/fa";
+import {MdAccessTime, MdAttachMoney} from "react-icons/md";
 
 export function Header() {
   return (
@@ -83,6 +85,8 @@ export default function Home() {
         {/* FAQ Section */}
         <FAQSection />
 
+        <SPCUpdateHighlights />
+
         {/* Footer */}
         <Footer />
       </div>
@@ -92,62 +96,82 @@ export default function Home() {
 
 const HeroSection = () => {
   return (
-    <>
-      <main className=" pt-20 px-5 md:px-10 overflow-hidden lg:h-[calc(100dvh-100px)] lg:max-h-[1024px] relative">
-        <DotBackgroundDemo />
-        <div className="container mx-auto h-full relative">
-          {/* Floating blob */}
-          <div className="absolute -z-10 top-0 left-0 size-40 sm:size-60  xl:size-80 rounded-full blur-[80px] sm:blur-[120px] xl:blur-[200px] bg-primary floating-blob"></div>
-          <div className="absolute -z-10 bottom-10 right-10 size-36 md:size-56 xl:size-72 rounded-full blur-3xl md:blur-[100px] xl:blur-[260px] bg-[#00b1ed] floating-blob-2"></div>
+      <>
+        <main className="relative pt-24 px-6 md:px-10 lg:h-[calc(100vh-100px)] overflow-hidden">
+          <DotBackgroundDemo />
+
+          {/* Floating blobs */}
+          <div className="absolute -z-10 top-0 left-0 size-40 sm:size-60 xl:size-80 rounded-full blur-[100px] sm:blur-[160px] xl:blur-[240px] bg-primary floating-blob"></div>
+          <div className="absolute -z-10 bottom-10 right-10 size-36 md:size-56 xl:size-72 rounded-full blur-3xl md:blur-[120px] xl:blur-[280px] bg-[#00b1ed] floating-blob-2"></div>
 
           {/* Hero content */}
-          <div className="relative w-full h-full flex flex-col gap-4 justify-center items-center py-20">
-            <p className="text-lg sm:text-xl md:text-2xl font-bold">
-              INTRODUCING
-            </p>
-            <h2 className="font-gothic text-5xl sm:text-7xl md:text-8xl text-center">
-              SMART P2P<span className="text-primary font-gothic"> CIRCLE</span>
-            </h2>
-            <p className="max-w-4xl text-lg md:text-2xl text-center">
-              The Future of Wealth is Peer-to-Peer
+          <div className="container mx-auto h-full flex flex-col justify-center items-center gap-6 text-center py-16">
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-primary uppercase tracking-wider">
+              🎉 HURRAY! EMIRATES MONEY LAUNCHES MAY 13, 2025 🎉
             </p>
 
-            <div className="flex flex-col w-full sm:w-max sm:flex-row items-center gap-6 mt-10">
-              <Link to="/login" className="w-full sm:w-max">
+            <h1 className="font-gothic text-4xl sm:text-6xl md:text-7xl leading-tight font-extrabold">
+              A <span className="text-primary">SECURE</span> & <span className="text-[#00b1ed]">DECENTRALIZED</span> P2P USDT PLATFORM
+            </h1>
+
+            <p className="max-w-3xl text-lg md:text-xl text-muted-foreground">
+              Join a global community that trades round the clock — across every time zone.
+            </p>
+
+            {/* Highlighted features */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 w-full max-w-6xl">
+              {[
+                "100% Return in 10 Days",
+                "Earn Till Infinity with Re-Commitment",
+                "Bidding Times: 3AM • 12PM • 8PM",
+                "Min $10, Max 500,000 USDT Daily",
+                "10% Referral Bonus Instantly",
+                "End Economic Hardship – Join Now"
+              ].map((text, index) => (
+                  <div
+                      key={index}
+                      className="border border-muted bg-background/50 rounded-2xl p-6 text-lg font-medium backdrop-blur-md shadow-md hover:shadow-xl transition-all"
+                  >
+                    {text}
+                  </div>
+              ))}
+            </div>
+
+            {/* Call to Actions */}
+            <div className="flex flex-col sm:flex-row items-center gap-6 mt-12 w-full sm:w-auto">
+              <Link to="/login">
                 <Button
-                  variant="outline"
-                  size={"lg"}
-                  className="h-16 w-full rounded-full sm:px-10 sm:max-w-64 sm:w-max text-xl cursor-pointer"
+                    variant="outline"
+                    size="lg"
+                    className="h-14 rounded-full sm:px-10 text-lg shadow-lg"
                 >
                   Sign In
                 </Button>
               </Link>
 
-              <Link to="/register" className="w-full sm:w-max">
+              <Link to="/register">
                 <Button
-                  size={"lg"}
-                  className="h-16 w-full rounded-full sm:px-10 sm:max-w-64 sm:w-max text-xl cursor-pointer"
+                    size="lg"
+                    className="h-14 rounded-full sm:px-10 text-lg bg-gradient-to-r from-primary to-[#00b1ed] text-white shadow-xl"
                 >
-                  Register
+                  Register Now
                 </Button>
               </Link>
             </div>
           </div>
+        </main>
+
+        {/* Marquee banner */}
+        <div className="bg-primary border-t-4 border-b-4 border-dark h-12 flex items-center font-rubik text-white text-lg">
+          <Marquee speed={40}>
+            {Array.from({ length: 10 }).map((_, index) => (
+                <span key={index} className="mx-6 font-semibold">
+              🔥 No Recommitment • 100% Transparency • 200% Return in 14 Days 🔥
+            </span>
+            ))}
+          </Marquee>
         </div>
-      </main>
-      <div className="bg-primary border-t-4 border-b-4 border-dark h-10 flex items-center font-rubik">
-        <Marquee speed={40}>
-          {Array.from({ length: 20 }).map((_, index) => {
-            return (
-              <p key={index} className="mx-4 text-base sm:text-xl font-bold">
-                {/*<span className="mx-4">$TL</span>*/}
-                <span className="mx-4">No Recommitment. 100% Transparency. 200% Returns in 14 Days.</span>
-              </p>
-            );
-          })}
-        </Marquee>
-      </div>
-    </>
+      </>
   );
 };
 
@@ -410,76 +434,184 @@ function FeaturesSection() {
 function FAQSection() {
   const faqs = [
     {
-      question: "What is SMART P2P CIRCLE Trading (TL)?",
+      question: "What is SmartP2PCircle and Who Owns it?",
       answer:
-        "SMART P2P CIRCLE Trading (TL) is a peer-to-peer digital asset trading and exchange platform that acts as an intermediary between sellers and buyers of digital assets (coins or tokens). Our platform enables secure, transparent, and efficient trading without traditional intermediaries.",
+          "SmartP2PCircle (SPC) is a fully decentralised, peer-to-peer (P2P) Web3 ecosystem built on smart contract technology. It operates transparently on the blockchain and is entirely owned and controlled by its members.",
     },
     {
-      question: "How does P2P trading work?",
+      question: "Is the SPC platform secure and scam-proof?",
       answer:
-        "Peer-to-peer (P2P) trading allows users to trade directly with each other without a central authority. On our platform, sellers list their digital assets with their desired price and payment methods. Buyers can browse listings, select one that matches their requirements, and initiate a trade. Our escrow system holds the digital assets until the payment is confirmed, ensuring a secure transaction.",
+          "Yes, SPC is designed as a 100% decentralised P2P system with no central authority and no central system account, making it highly secure and resistant to scams or hacking.",
     },
     {
-      question: "What cryptocurrencies can I trade on TL?",
-      answer:
-        "SMART P2P CIRCLE Trading supports a wide range of cryptocurrencies including Bitcoin (BTC), Ethereum (ETH), Tether (USDT), Binance Coin (BNB), and many other popular altcoins. We regularly add support for new cryptocurrencies based on market demand and community feedback.",
+      question: "What is the minimum and maximum bid allowed?",
+      answer: "Minimum bid: $10 USDT. Maximum bid: $300 USDT.",
     },
     {
-      question: "Is SMART P2P CIRCLE Trading secure?",
+      question: "What are the bidding and rebidding times?",
       answer:
-        "Yes, security is our top priority. We implement industry-standard security measures including two-factor authentication (2FA), advanced encryption for all data, cold storage for the majority of assets, and regular security audits. Additionally, our escrow system protects both buyers and sellers during transactions.",
+          "Bidding, rebidding, and asking are open twice daily: 10:00 – 10:30 AM CET and 10:00 – 10:30 PM CET.",
     },
     {
-      question: "What are the fees for trading on TL?",
+      question: "Is proof of payment required after bidding?",
       answer:
-        "SMART P2P CIRCLE Trading charges a small fee for each successful transaction, typically ranging from 0.1% to 0.5% depending on the trading volume and user tier. We do not charge any deposit fees, and withdrawal fees vary depending on the cryptocurrency network. You can view our complete fee schedule in your account dashboard.",
+          "Yes. After making a bid, you must upload a valid proof of payment (e.g., transaction hash ID) for verification.",
     },
     {
-      question: "How do I get started with SMART P2P CIRCLE Trading?",
+      question: "What happens if the person I paid does not confirm my payment?",
       answer:
-        "Getting started is simple: 1) Create an account by clicking the 'Sign Up' button, 2) Complete the verification process to secure your account, 3) Deposit funds or cryptocurrencies into your wallet, and 4) Start trading! Our intuitive interface makes it easy for both beginners and experienced traders.",
+          "You have a 3-hour timer on your dashboard. If the recipient fails to confirm your payment within this window, the system will automatically verify and confirm your transaction, provided the uploaded proof is genuine and verifiable on the blockchain.",
     },
     {
-      question: "What payment methods are supported?",
+      question: "What if someone assigned to pay me fails to do so within 3 hours?",
       answer:
-        "SMART P2P CIRCLE Trading supports various payment methods including bank transfers, credit/debit cards, PayPal, and other popular online payment services. Available payment methods may vary by region and are determined by the sellers' preferences when listing their assets.",
+          "If the assigned person doesn’t complete the payment within the 3-hour countdown, the system will automatically block them and assign a new bidder to you.",
     },
     {
-      question: "How long do transactions take to complete?",
+      question: "Do I need to contact the person I'm paying before making the payment?",
       answer:
-        "Transaction times vary depending on the payment method and cryptocurrency network. P2P trades typically complete within minutes to a few hours, depending on how quickly the buyer confirms payment. Cryptocurrency withdrawals depend on the specific blockchain network's confirmation times, ranging from minutes to an hour.",
+          "No, direct contact is not required. Our AI telegram bot will notify the person automatically. Simply make the payment and upload your proof. The recipient will confirm upon receiving the funds.",
+    },
+    {
+      question: "Will SPC be sustainable in the long term?",
+      answer:
+          "Yes. The rebid and ask mechanism ensures the continued sustainability of the ecosystem.",
+    },
+    {
+      question: "How long does it take for my bid to mature and yield returns?",
+      answer: "Each bid matures in 10 days for full returns.",
+    },
+    {
+      question: "How does the rebid policy work?",
+      answer:
+          "Participants are required to rebid 100% of their capital on the maturity date before requesting a withdrawal of 200%. Note: Do not rebid before your funds have fully matured.",
+    },
+    {
+      question: "What if I rebid before the maturity date?",
+      answer:
+          "Rebidding early resets your cycle. It becomes a new bid, and the 10-day maturity period starts afresh.",
+    },
+    {
+      question: "Do I have to refer others to earn, and what is the referral bonus?",
+      answer:
+          "Referring others is optional. However, you earn a 10% referral bonus from the bids made by your direct referrals.",
+    },
+    {
+      question: "Can I start with a small bid and increase later?",
+      answer:
+          "Yes. You can begin with any amount within the allowed range (minimum of $10) and increase in subsequent cycles.",
+    },
+    {
+      question: "What is the minimum withdrawal amount?",
+      answer: "The minimum amount you can withdraw is $20.",
+    },
+    {
+      question: "Are there generational or multi-level bonuses?",
+      answer:
+          "No. SPC offers only a direct referral bonus of 10%. There are no multi-level or generational bonuses.",
+    },
+    {
+      question: "Does SPC have a technical support team?",
+      answer:
+          "Yes, our support team operates 24/7. Send all inquiries and complaints to our support telegram bot or via email to support@smartp2pcircle.com.",
     },
   ];
 
   return (
-    <section id="faqs" className="bg-primary/20 py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-sm mx-auto">
-            Find answers to the most common questions about SMART P2P CIRCLE Trading
-            and our P2P platform.
-          </p>
-        </div>
+      <section id="faqs" className="bg-primary/20 py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-muted-foreground text-sm sm:text-base max-w-sm mx-auto">
+              Find answers to the most common questions about SmartP2PCircle (SPC) and how the platform works.
+            </p>
+          </div>
 
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index + 1}`}>
-                <AccordionTrigger className="text-sm sm:text-lg md:text-xl">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-sm sm:text-base">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, index) => (
+                  <AccordionItem key={index} value={`item-${index + 1}`}>
+                    <AccordionTrigger className="text-sm sm:text-lg md:text-xl">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm sm:text-base">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+  );
+}
+function SPCUpdateHighlights() {
+  const updates = [
+    {
+      icon: <MdAccessTime className="text-blue-600 text-3xl" />,
+      title: "Cycle Duration",
+      description: "Bidding cycle now lasts 10 days instead of 14 days.",
+    },
+    {
+      icon: <FaArrowCircleUp className="text-green-600 text-3xl" />,
+      title: "Direct Referral Commission",
+      description: "Earn 10% on every direct referral, increased from 7.5%.",
+    },
+    {
+      icon: <MdAttachMoney className="text-purple-600 text-3xl" />,
+      title: "Minimum Withdrawal",
+      description: "You can now withdraw from as little as $20 (was $10).",
+    },
+    {
+      icon: <FaRobot className="text-pink-600 text-3xl" />,
+      title: "AI Telegram Bot Support",
+      description: "Instant help through our automated Telegram support bot.",
+    },
+  ];
+
+  return (
+      <section className="bg-black py-20">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-extrabold text-white mb-4">
+              🔄 Latest SPC System Updates
+            </h2>
+            <p className="text-[#f1e3c0] text-base max-w-2xl mx-auto">
+              Your SPC platform just got even better. More powerful earnings, smarter tools, and clearer systems for maximum benefit.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {updates.map((item, index) => (
+                <div
+                    key={index}
+                    className="bg-[#1a1a1a] border border-yellow-600 rounded-xl p-6 text-center hover:shadow-yellow-500/30 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex justify-center mb-4">{item.icon}</div>
+                  <h4 className="text-xl font-semibold text-white mb-2">{item.title}</h4>
+                  <p className="text-sm text-[#d4c59a]">{item.description}</p>
+                </div>
+            ))}
+          </div>
+
+          {/* Download Marketing Resources Button */}
+          <div className="mt-16 text-center">
+            <a
+                href="/downloads/marketing-resources.zip"
+                className="inline-flex items-center gap-3 px-6 py-3 text-black font-semibold bg-yellow-400 hover:bg-yellow-500 rounded-full text-lg shadow-md hover:shadow-yellow-400/40 transition-all"
+                download
+            >
+              <FaDownload />
+              Click here to download marketing resources
+            </a>
+            <p className="text-sm text-[#f1e3c0] mt-2">
+              Includes SPC videos, flyers, and promo PDFs.
+            </p>
+          </div>
+        </div>
+      </section>
   );
 }
 
