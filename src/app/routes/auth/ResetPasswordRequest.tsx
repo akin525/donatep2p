@@ -7,7 +7,7 @@ export default function ResetPasswordRequest() {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleRequest = async (e) => {
+    const handleRequest = async (e: any) => {
         e.preventDefault();
         setLoading(true);
         setMessage("");
@@ -28,7 +28,7 @@ export default function ResetPasswordRequest() {
             }else {
                 toast.error(data.message);
             }
-        } catch (err) {
+        } catch (err: any) {
             toast.error(err);
             setMessage("❌ Failed to send reset code. Please try again.");
         } finally {
