@@ -23,11 +23,21 @@ import BidStatusSearch from "@/app/routes/dashboard/BidStatusSearch.tsx";
 import InvestmentsPage from "@/app/routes/dashboard/InvestmentsPage.tsx";
 import InvestmentDetails from "@/app/routes/dashboard/InvestmentDetails.tsx";
 import Maintenance from "@/app/routes/dashboard/Maintenance.tsx";
+import ResetPasswordRequest from "@/app/routes/auth/ResetPasswordRequest.tsx";
+import SetNewPassword from "@/app/routes/auth/SetNewPassword.tsx";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: Home,
+  },
+    {
+    path: "/forgot-password",
+    Component: ResetPasswordRequest,
+  },
+    {
+    path: "/set-password",
+    Component: SetNewPassword,
   },
     {
     path: "/maintenance",
