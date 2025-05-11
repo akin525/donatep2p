@@ -58,6 +58,10 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
                         const settingsData = await settingsResponse.json();
                         console.log("Settings:", settingsData);
 
+                        const isMaintenance = settingsData?.data?.maintain === 1;
+                        if (isMaintenance) {
+                            navigate("/maintenance");
+                        }
                         // 3. Merge user data with settings
                         setUser({
                             ...data.data.user,

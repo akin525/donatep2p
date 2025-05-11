@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import {Link, useNavigate} from "react-router";
 import MobileMenu from "@/components/mobile-menu";
 import { ReactLenis } from "lenis/react";
 import { useEffect } from "react";
@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import {FaArrowCircleUp, FaDownload, FaRobot} from "react-icons/fa";
 import {MdAccessTime, MdAttachMoney} from "react-icons/md";
+import axios from "axios";
 
 export function Header() {
   return (
@@ -63,6 +64,26 @@ export default function Home() {
     AOS.init({ once: true });
     AOS.refresh();
   }, []);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        AOS.init({ once: true });
+        AOS.refresh();
+
+        // Fetch system config
+        axios
+            .get("https://donate.paymoni.com.ng/api/v1/system-config")
+            .then((res) => {
+                const isMaintenance = res?.data?.data?.maintain === 1;
+                if (isMaintenance) {
+                    navigate("/maintenance");
+                }
+            })
+            .catch((err) => {
+                console.error("System config fetch failed:", err);
+            });
+    }, [navigate]);
 
   return (
     <ReactLenis root>

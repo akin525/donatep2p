@@ -22,11 +22,16 @@ import ReferralPage from "@/app/routes/dashboard/Referral.tsx";
 import BidStatusSearch from "@/app/routes/dashboard/BidStatusSearch.tsx";
 import InvestmentsPage from "@/app/routes/dashboard/InvestmentsPage.tsx";
 import InvestmentDetails from "@/app/routes/dashboard/InvestmentDetails.tsx";
+import Maintenance from "@/app/routes/dashboard/Maintenance.tsx";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: Home,
+  },
+    {
+    path: "/maintenance",
+    Component: Maintenance,
   },
   {
     path: "/login",

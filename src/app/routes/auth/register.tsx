@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { toast } from "react-toastify";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const getDeviceName = () => {
   const ua = navigator.userAgent;
@@ -23,6 +24,7 @@ const getDeviceName = () => {
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loginEnabled, setLoginEnabled] = useState(true);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -45,6 +47,25 @@ export default function RegisterPage() {
     }
   }, [location.search]);
 
+  useEffect(() => {
+    const fetchSystemConfig = async () => {
+      try {
+        const res = await fetch(`${baseUrl}system-config`);
+        const result = await res.json();
+
+        if (result.success) {
+          // setSiteName(result.data.sitename || "Smart P2P Circle");
+          setLoginEnabled(result.data.login === 1);
+        } else {
+          toast.error("Failed to load system config.");
+        }
+      } catch (err) {
+        toast.error("System config error.");
+      }
+    };
+
+    fetchSystemConfig();
+  }, []);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -237,9 +258,11 @@ export default function RegisterPage() {
                 <div className="md:col-span-3">
                   <button
                       type="submit"
-                      disabled={loading}
+                      disabled={loading || !loginEnabled}
                       className={`w-full px-4 py-3 rounded-lg font-medium transition ${
-                          loading ? "bg-gray-600 cursor-not-allowed" : "bg-primary text-black hover:bg-yellow-500"
+                          loading || !loginEnabled
+                              ? "bg-gray-500 cursor-not-allowed"
+                              : "bg-primary hover:bg-yellow-500 text-black"
                       }`}
                   >
                     {loading ? "Creating..." : "Create Account"}
@@ -253,9 +276,9 @@ export default function RegisterPage() {
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-gray-700"></div>
                   </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-[#070D20] text-gray-400">Or sign up with</span>
-                  </div>
+                  {/*<div className="relative flex justify-center text-sm">*/}
+                  {/*  <span className="px-2 bg-[#070D20] text-gray-400">Or sign up with</span>*/}
+                  {/*</div>*/}
                 </div>
 
                 <div className="mt-6 grid grid-cols-3 gap-3">
