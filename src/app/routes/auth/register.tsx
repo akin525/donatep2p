@@ -144,7 +144,7 @@ export default function RegisterPage() {
                 </h4>
               </Link>
               <h1 className="text-2xl font-bold mt-6 mb-2">Create Your Account</h1>
-              <p className="text-gray-400">Join TradeLink Trading and start trading cryptocurrencies</p>
+              <p className="text-gray-400">Join SMARTP2PCIRCLE  Trading and start trading cryptocurrencies</p>
             </div>
 
             <div className="bg-[#070D20] rounded-xl border border-gray-800 p-8">

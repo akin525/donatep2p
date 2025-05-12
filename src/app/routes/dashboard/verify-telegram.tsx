@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import {getAuthToken} from "@/utils/auth.tsx";
@@ -10,6 +10,27 @@ export default function VerifyTelegramPage() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const token = getAuthToken();
+    // const [siteName, setSiteName] = useState("Smart P2P Circle");
+    const [siteBot, setSiteBot] = useState("");
+
+    useEffect(() => {
+        const fetchSystemConfig = async () => {
+            try {
+                const res = await fetch(`${baseUrl}system-config`);
+                const result = await res.json();
+
+                if (result.success) {
+                    setSiteBot(result.data.telegram);
+                } else {
+                    toast.error("Failed to load system config.");
+                }
+            } catch (err) {
+                toast.error("System config error.");
+            }
+        };
+
+        fetchSystemConfig();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -53,19 +74,12 @@ export default function VerifyTelegramPage() {
                     <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                         🔷 <strong>Get Your Telegram Chat ID:</strong> <br />
                         1. Open Telegram and search for{" "}
-                        <a
-                            href="https://t.me/userinfobot"
-                            target="_blank"
-                            className="text-blue-400 underline"
-                            rel="noreferrer"
-                        >
-                            @userinfobot
-                        </a>
+                            {siteBot}
                         <br />
-                        2. Start the bot <br />
-                        3. It will reply with your user ID — that's your Chat ID!
-                        4. Search for @ToluxsysTestBot!
-                        5. Start the bot <br />
+                        2. Click Start or Send /start <br />
+                        3. Select Get Chat ID<br/>
+                        4. Copy the chat id and fill in the input box to complete your verification!<br/>
+                        {/*5. Start the bot <br />*/}
 
                     </p>
                 </div>

@@ -16,6 +16,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { DotBackgroundDemo } from "@/components/ui/dot-background";
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 import {
   Bitcoin,
@@ -73,7 +74,7 @@ export default function Home() {
 
         // Fetch system config
         axios
-            .get("https://donate.paymoni.com.ng/api/v1/system-config")
+            .get(`${baseUrl}system-config`)
             .then((res) => {
                 const isMaintenance = res?.data?.data?.maintain === 1;
                 if (isMaintenance) {
@@ -129,7 +130,7 @@ const HeroSection = () => {
           {/* Hero content */}
           <div className="container mx-auto h-full flex flex-col justify-center items-center gap-6 text-center py-16">
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-primary uppercase tracking-wider">
-              🎉 HURRAY! EMIRATES MONEY LAUNCHES MAY 13, 2025 🎉
+              🎉 HURRAY! SMARTP2PCIRCLE  MONEY LAUNCHES MAY 13, 2025 🎉
             </p>
 
             <h1 className="font-gothic text-4xl sm:text-6xl md:text-7xl leading-tight font-extrabold">
@@ -188,7 +189,7 @@ const HeroSection = () => {
           <Marquee speed={40}>
             {Array.from({ length: 10 }).map((_, index) => (
                 <span key={index} className="mx-6 font-semibold">
-              🔥 No Recommitment • 100% Transparency • 200% Return in 14 Days 🔥
+              🔥 No Recommitment • 100% Transparency • 200% Return in 10 Days 🔥
             </span>
             ))}
           </Marquee>
@@ -764,7 +765,7 @@ const HowItWorksSection = () => {
     {
       title: "Earn",
       description:
-          "And it gets even better – you earn 7.5% every time your referrals bid again. That’s residual income, automated by a smart contract, sent directly to your wallet, with no third-party interference.",
+          "And it gets even better – you earn 10% every time your referrals bid again. That’s residual income, automated by a smart contract, sent directly to your wallet, with no third-party interference.",
       icon: "💰",
     },
     {
