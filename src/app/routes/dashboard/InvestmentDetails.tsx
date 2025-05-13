@@ -63,7 +63,7 @@ export default function InvestmentDetails() {
             <div className="flex-1 flex flex-col overflow-hidden">
                 <DashboardHeader setSidebarOpen={setSidebarOpen} />
                 <main className="p-6 max-w-6xl mx-auto w-full">
-                    <h1 className="text-4xl font-bold text-center mb-10 tracking-tight">📊 Investment Overview</h1>
+                    <h1 className="text-4xl font-bold text-center mb-10 tracking-tight">📊 Energy Node Overview</h1>
 
                     {loading ? (
                         <p className="text-center text-gray-400">Loading...</p>
@@ -75,7 +75,7 @@ export default function InvestmentDetails() {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             {/* Investment Card */}
                             <div className="bg-[#1E293B] rounded-2xl p-6 shadow-lg border border-gray-700">
-                                <h2 className="text-2xl font-semibold mb-4">💼 Investment Details</h2>
+                                <h2 className="text-2xl font-semibold mb-4">💼 Energy Node Details</h2>
                                 <div className="space-y-3 text-base">
                                     <div className="flex justify-between">
                                         <span className="text-gray-400">Reference:</span>

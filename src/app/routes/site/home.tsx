@@ -130,23 +130,23 @@ const HeroSection = () => {
           {/* Hero content */}
           <div className="container mx-auto h-full flex flex-col justify-center items-center gap-6 text-center py-16">
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-primary uppercase tracking-wider">
-              🎉 HURRAY! SMARTP2PCIRCLE  MONEY LAUNCHES MAY 13, 2025 🎉
+              🎉🎉
             </p>
 
             <h1 className="font-gothic text-4xl sm:text-6xl md:text-7xl leading-tight font-extrabold">
-              A <span className="text-primary">SECURE</span> & <span className="text-[#00b1ed]">DECENTRALIZED</span> P2P USDT PLATFORM
+              A <span className="text-primary">SMART</span> & <span className="text-[#00b1ed]">P2P</span> CIRCLE
             </h1>
 
             <p className="max-w-3xl text-lg md:text-xl text-muted-foreground">
-              Join a global community that trades round the clock — across every time zone.
+              THE FIRST EVER  DECENTRALIZED, SMART CONTRACT & AI-POWERED USDT-BEP20 P2P PLATFORM
             </p>
 
             {/* Highlighted features */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 w-full max-w-6xl">
               {[
-                "100% Return in 10 Days",
-                "Earn Till Infinity with Re-Commitment",
-                "Bidding Times: 3AM • 12PM • 8PM",
+                "Where Members Bid, Rebid, and Ask to Get 200% Returns in 10 Days.",
+                "100% transparency!",
+                "SPC's sustainability lies in our controlled bidding protocol ($300 bid max) and REBIDDING policy!",
                 "Min $10, Max 500,000 USDT Daily",
                 "10% Referral Bonus Instantly",
                 "End Economic Hardship – Join Now"
@@ -210,16 +210,16 @@ const WhatIsSection = () => {
                 <span className="text-white text-xs sm:text-base font-bold">!</span>
               </div>
               <span className="text-primary text-sm sm:text-base uppercase font-medium">
-            Welcome to SPC (Smart P2P Circle),
+            ABOUT SMART P2P CIRCLE:,
           </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              The world's first community-driven bid & ask system powered by Web3
+              It's a global usdt peer-to-peer platform that operates transparently on the blockchain & is entirely owned and controlled by its members
             </h1>
 
             <p className="text-muted-foreground text-sm lg:text-base mb-8 max-w-lg mx-auto lg:mx-0">
-              Smart contracts, and the reliability of USDT on Binance Smart Chain.
+              No central authority, no central account, highly secure, and resistant to scams or hacking
             </p>
 
             <Link to="/dashboard">
@@ -281,8 +281,7 @@ const P2PSection = () => {
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              In a world filled with broken promises and endless cycles, SPC offers you a transparent, decentralized,
-              and profitable alternative. No recommitment. No hidden rules. Just clean, smart earning.
+              This is more than a platform — it’s a movement. A global Web3-powered revolution where transparency, ownership, and wealth are back in your hands.
             </h2>
 
             {/*<p className="text-gray-400 text-sm sm:text-base mb-8">*/}
@@ -752,26 +751,40 @@ const HowItWorksSection = () => {
     {
       title: "Register Your Account",
       description:
-          "Sign up in seconds with your email or wallet. No complex verifications, just your commitment to the circle.",
+          "Register using the referral link of your sponsor or visit smartp2pcircle.com",
       icon: "📝",
     },
 
     {
-      title: "Bid to Join a Circle",
+      title: "You bid from $10 (mini)- $300 (max)",
       description:
-          "You bid – starting from just $10 to $300 USDT (BEP20) – and in 14 days, you get paired to ask and receive double your bid. Bid $10, get $20. Bid $ 50, get $100. Big $200, get $ 400. Bid $300, get $600. Simple.",
+          "Once you register, you can bid – starting from just $10 to $300 USDT using Binance Smart Chain Network  (BEP20)",
       icon: "🔄",
     },
     {
-      title: "Earn",
+      title: "Paired To Receive",
       description:
-          "And it gets even better – you earn 10% every time your referrals bid again. That’s residual income, automated by a smart contract, sent directly to your wallet, with no third-party interference.",
+          " In 10 days, you rebid same amount you started with, then ask to get paired to receive double your bid",
       icon: "💰",
     },
     {
-      title: "Notification & Ai",
+      title: "Bidding Rebidding",
       description:
-          "Plus, our Smart AI Telegram bot keeps you in control 24/7 — sending real-time updates, pairing info, and payment notifications.",
+          "Bidding, Rebidding & asking opens twice daily:\n" +
+          "* 10 am - 10:30 am CET\n" +
+          "* 10 pm  - 10:30 pm CET\n",
+      icon: "💰",
+    },
+    {
+      title: "Commission",
+      description:
+          "Get an infinite 10% recurring direct referral commission each time your partners rebid",
+      icon: "📈",
+    },
+    {
+      title: "Minimum Withdrawal Commission",
+      description:
+          "The minimum withdrawal commission is $20",
       icon: "📈",
     },
   ];

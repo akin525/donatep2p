@@ -69,7 +69,7 @@ export default function InvestmentsPage() {
                 <DashboardHeader setSidebarOpen={setSidebarOpen} />
 
                 <main className="p-6">
-                    <h1 className="text-3xl font-bold text-center mb-6">My Investments</h1>
+                    <h1 className="text-3xl font-bold text-center mb-6">Energy Node</h1>
 
                     {loading ? (
                         <p className="text-center text-gray-400">Loading...</p>
