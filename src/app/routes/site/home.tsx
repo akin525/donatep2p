@@ -636,7 +636,7 @@ function SPCUpdateHighlights() {
           {/* Download Marketing Resources Button */}
           <div className="mt-16 text-center">
             <a
-                href="/downloads/marketing-resources.zip"
+                href="https://smartp2pcircle.com/media/sp2pc.zip"
                 className="inline-flex items-center gap-3 px-6 py-3 text-black font-semibold bg-yellow-400 hover:bg-yellow-500 rounded-full text-lg shadow-md hover:shadow-yellow-400/40 transition-all"
                 download
             >
