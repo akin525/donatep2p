@@ -146,7 +146,7 @@ const HeroSection = () => {
               {[
                 "Where Members Bid, Rebid, and Ask to Get 200% Returns in 10 Days.",
                 "100% transparency!",
-                "SPC's sustainability lies in our controlled bidding protocol ($300 bid max) and REBIDDING policy!",
+                "SPC's sustainability lies in our controlled bidding protocol ($5000 bid max) and REBIDDING policy!",
                 "Min $10, Max 500,000 USDT Daily",
                 "10% Referral Bonus Instantly",
                 "End Economic Hardship – Join Now"
