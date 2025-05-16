@@ -5,7 +5,7 @@ import DashboardHeader from "@/components/DashboardHeader";
 import Sidebar from "@/components/Sidebar";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
-import MaintenancePage from "@/app/routes/dashboard/MaintenancePage.tsx";
+// import MaintenancePage from "@/app/routes/dashboard/MaintenancePage.tsx";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const token = getAuthToken();
@@ -73,31 +73,31 @@ export default function AskPage() {
     return () => clearInterval(interval);
   }, [user?.timeopening, user?.timeclosing]);
 
-  const now = new Date();
-  const openingTime = new Date(user?.timeopening || "");
-  const closingTime = new Date(user?.timeclosing || "");
-  const outsideTimeRange = now < openingTime || now > closingTime;
-  const page = "Ask Not Open";
-  const tittle = "asks";
-  if (!user?.timeopening || !user?.timeclosing || outsideTimeRange) {
-    return <MaintenancePage countdown={countdown} page={page} tittle={tittle} />;
-  }
+  // const now = new Date();
+  // const openingTime = new Date(user?.timeopening || "");
+  // const closingTime = new Date(user?.timeclosing || "");
+  // const outsideTimeRange = now < openingTime || now > closingTime;
+  // const page = "Ask Not Open";
+  // const tittle = "asks";
+  // if (!user?.timeopening || !user?.timeclosing || outsideTimeRange) {
+  //   return <MaintenancePage countdown={countdown} page={page} tittle={tittle} />;
+  // }
   const handleAskRequest = async () => {
-    if (!user?.timeopening || !user?.timeclosing) {
-      toast.error("Opening and closing times are not set.");
-      return;
-    }
+    // if (!user?.timeopening || !user?.timeclosing) {
+    //   toast.error("Opening and closing times are not set.");
+    //   return;
+    // }
 
-    const now = new Date();
-    const openingTime = new Date(user.timeopening);
-    const closingTime = new Date(user.timeclosing);
+    // const now = new Date();
+    // const openingTime = new Date(user.timeopening);
+    // const closingTime = new Date(user.timeclosing);
 
-    if (now < openingTime || now > closingTime) {
-      toast.error(
-          `Ask requests are allowed only between ${user.timeopening} and ${user.timeclosing}.`
-      );
-      return;
-    }
+    // if (now < openingTime || now > closingTime) {
+    //   toast.error(
+    //       `Ask requests are allowed only between ${user.timeopening} and ${user.timeclosing}.`
+    //   );
+    //   return;
+    // }
 
     setLoading(true);
     try {
@@ -249,6 +249,13 @@ export default function AskPage() {
               >
                 {loading ? "Processing..." : "Submit Ask Request"}
               </Button>
+              {/*<Button*/}
+              {/*    onClick={handleAskRequest}*/}
+              {/*    disabled={loading}*/}
+              {/*    className="w-full py-3 text-lg font-semibold"*/}
+              {/*>*/}
+              {/*  {loading ? "Processing..." : "Submit Ask Request"}*/}
+              {/*</Button>*/}
 
               {askSuccess && (
                   <p className="text-green-500 mt-4 text-center font-medium">

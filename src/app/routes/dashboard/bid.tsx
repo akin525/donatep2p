@@ -5,7 +5,7 @@ import Sidebar from "../../../components/Sidebar";
 import { getAuthToken } from "@/utils/auth";
 import { toast } from "react-toastify";
 import { useUser } from "@/context/UserContext.tsx";
-import MaintenancePage from "@/app/routes/dashboard/MaintenancePage.tsx";
+// import MaintenancePage from "@/app/routes/dashboard/MaintenancePage.tsx";
 
 interface Plan {
   id: number;
@@ -24,8 +24,8 @@ export default function CreateBid() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [canBid, setCanBid] = useState(false);
-  const [countdown, setCountdown] = useState<string>("");
+  // const [canBid, setCanBid] = useState(false);
+  // const [countdown, setCountdown] = useState<string>("");
 
   const { user } = useUser();
   const token = getAuthToken();
@@ -63,60 +63,60 @@ export default function CreateBid() {
     const checkBidTime = () => {
       if (!user?.timeopening || !user?.timeclosing) return;
 
-      const now = new Date();
-      const openingTime = new Date(user.timeopening).getTime();
-      const closingTime = new Date(user.timeclosing).getTime();
-      const currentTime = now.getTime();
+      // const now = new Date();
+      // const openingTime = new Date(user.timeopening).getTime();
+      // const closingTime = new Date(user.timeclosing).getTime();
+      // const currentTime = now.getTime();
 
-      setCanBid(currentTime >= openingTime && currentTime <= closingTime);
+      // setCanBid(currentTime >= openingTime && currentTime <= closingTime);
     };
 
-    const calculateCountdown = () => {
-      if (!user?.timeopening || !user?.timeclosing) return;
-
-      const now = new Date();
-      const openingTime = new Date(user.timeopening);
-      const closingTime = new Date(user.timeclosing);
-
-      let targetTime = openingTime;
-
-      if (now.getTime() > closingTime.getTime()) {
-        targetTime = new Date(openingTime);
-        targetTime.setDate(targetTime.getDate() + 1);
-      }
-
-      const diffMs = targetTime.getTime() - now.getTime();
-      const hours = Math.floor(diffMs / (1000 * 60 * 60));
-      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-      setCountdown(
-          `${hours.toString().padStart(2, "0")}:${minutes
-              .toString()
-              .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
-      );
-    };
+    // const calculateCountdown = () => {
+    //   if (!user?.timeopening || !user?.timeclosing) return;
+    //
+    //   const now = new Date();
+    //   const openingTime = new Date(user.timeopening);
+    //   const closingTime = new Date(user.timeclosing);
+    //
+    //   let targetTime = openingTime;
+    //
+    //   if (now.getTime() > closingTime.getTime()) {
+    //     targetTime = new Date(openingTime);
+    //     targetTime.setDate(targetTime.getDate() + 1);
+    //   }
+    //
+    //   const diffMs = targetTime.getTime() - now.getTime();
+    //   const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    //   const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    //   const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+    //
+    //   setCountdown(
+    //       `${hours.toString().padStart(2, "0")}:${minutes
+    //           .toString()
+    //           .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+    //   );
+    // };
 
     checkBidTime();
-    calculateCountdown();
+    // calculateCountdown();
 
     const interval = setInterval(() => {
       checkBidTime();
-      calculateCountdown();
+      // calculateCountdown();
     }, 1000);
 
     return () => clearInterval(interval);
   }, [user?.timeopening, user?.timeclosing]);
 
-  const now = new Date();
-  const openingTime = new Date(user?.timeopening || "");
-  const closingTime = new Date(user?.timeclosing || "");
-  const outsideTimeRange = now < openingTime || now > closingTime;
-  const page = "Bidding Not Open";
-  const tittle = "bids";
-  if (!user?.timeopening || !user?.timeclosing || outsideTimeRange) {
-    return <MaintenancePage countdown={countdown} page={page} tittle={tittle} />;
-  }
+  // const now = new Date();
+  // const openingTime = new Date(user?.timeopening || "");
+  // const closingTime = new Date(user?.timeclosing || "");
+  // const outsideTimeRange = now < openingTime || now > closingTime;
+  // const page = "Bidding Not Open";
+  // const tittle = "bids";
+  // if (!user?.timeopening || !user?.timeclosing || outsideTimeRange) {
+  //   return <MaintenancePage countdown={countdown} page={page} tittle={tittle} />;
+  // }
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,10 +131,10 @@ export default function CreateBid() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!canBid) {
-      toast.error("Bidding is only allowed during the active time window.");
-      return;
-    }
+    // if (!canBid) {
+    //   toast.error("Bidding is only allowed during the active time window.");
+    //   return;
+    // }
 
     if (!formData.amount || parseFloat(formData.amount) <= 0) {
       toast.error("Please enter a valid amount.");
@@ -269,26 +269,33 @@ export default function CreateBid() {
                   />
                 </div>
 
-                {!canBid && (
-                    <div className="text-center mb-4">
-                      <p className="text-gray-400 text-sm mb-2">Next Bidding Window Opens In:</p>
-                      <div className="text-pink-500 text-2xl font-bold tracking-widest">
-                        {countdown}
-                      </div>
-                    </div>
-                )}
+                {/*{!canBid && (*/}
+                {/*    <div className="text-center mb-4">*/}
+                {/*      <p className="text-gray-400 text-sm mb-2">Next Bidding Window Opens In:</p>*/}
+                {/*      <div className="text-pink-500 text-2xl font-bold tracking-widest">*/}
+                {/*        {countdown}*/}
+                {/*      </div>*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
                 <button
                     type="submit"
-                    disabled={submitting || !canBid}
-                    className={`w-full py-2 rounded-lg font-medium transition ${
-                        submitting || !canBid
-                            ? "bg-pink-400 cursor-not-allowed"
-                            : "bg-pink-600 hover:bg-pink-700"
-                    }`}
+                    // disabled={submitting || !canBid}
+                    className={`w-full py-2 rounded-lg font-medium transition bg-pink-600 hover:bg-pink-700`}
                 >
-                  {submitting ? "Submitting..." : canBid ? "Submit Bid" : "Bidding Closed"}
+                  {submitting ? "Submitting..." :  "Submit Bid"}
                 </button>
+                {/*<button*/}
+                {/*    type="submit"*/}
+                {/*    disabled={submitting || !canBid}*/}
+                {/*    className={`w-full py-2 rounded-lg font-medium transition ${*/}
+                {/*        submitting || !canBid*/}
+                {/*            ? "bg-pink-400 cursor-not-allowed"*/}
+                {/*            : "bg-pink-600 hover:bg-pink-700"*/}
+                {/*    }`}*/}
+                {/*>*/}
+                {/*  {submitting ? "Submitting..." : canBid ? "Submit Bid" : "Bidding Closed"}*/}
+                {/*</button>*/}
               </form>
             </div>
           </main>
