@@ -227,11 +227,11 @@ export default function AskPage() {
               </div>
 
               {/* Time Notice */}
-              {user?.timeopening && user?.timeclosing && (
-                  <div className="text-center text-yellow-400 text-sm mb-6">
-                    Ask requests are only allowed between {user.timeopening} and {user.timeclosing}.
-                  </div>
-              )}
+              {/*{user?.timeopening && user?.timeclosing && (*/}
+              {/*    <div className="text-center text-yellow-400 text-sm mb-6">*/}
+              {/*      Ask requests are only allowed between {user.timeopening} and {user.timeclosing}.*/}
+              {/*    </div>*/}
+              {/*)}*/}
               {!ask && (
                   <div className="text-center mb-4">
                     <p className="text-gray-400 text-sm mb-2"> Ask requests  Opens In:</p>

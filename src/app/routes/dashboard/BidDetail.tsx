@@ -110,6 +110,7 @@ export default function BidDetail() {
                                 <p className="mb-2"><strong>Paired Amount:</strong> <b>{peer.pair_amount} USDT</b></p>
                                 <p className="mb-2"><strong>Reference:</strong> {peer.reference}</p>
                                 <p><strong>Ask User:</strong> {peer.ask_user.username} ({peer.ask_user.email})</p>
+                                <p><strong>Wallet Address:</strong> {peer.ask.bep_address} </p>
                                 <p><strong>Due At:</strong> {new Date(peer.due_at).toLocaleString()}</p>
 
                                 <div className="flex items-center gap-2 mb-2">
