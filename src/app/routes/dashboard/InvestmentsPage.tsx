@@ -35,7 +35,7 @@ export default function InvestmentsPage() {
                     },
                 });
 
-                if (!res.ok) throw new Error("Failed to fetch investments");
+                if (!res.ok) throw new Error("Failed to fetch nodes");
 
                 const result = await res.json();
                 setInvestments(result?.data?.data || []);
@@ -76,7 +76,7 @@ export default function InvestmentsPage() {
                     ) : error ? (
                         <p className="text-center text-red-400">Error: {error}</p>
                     ) : investments.length === 0 ? (
-                        <p className="text-center text-gray-500">No investments found.</p>
+                        <p className="text-center text-gray-500">No Energy node found.</p>
                     ) : (
                         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {investments.map((inv) => (
