@@ -138,7 +138,7 @@ const HeroSection = () => {
             </h1>
 
             <p className="max-w-3xl text-lg md:text-xl text-muted-foreground">
-              THE FIRST EVER  DECENTRALIZED, SMART CONTRACT & AI-POWERED USDT-BEP20 P2P PLATFORM
+              THE FIRST EVER  DECENTRALIZED, BLOCKCHAIN TECHNOLOGY & AI-POWERED USDT-BEP20 P2P PLATFORM
             </p>
 
             {/* Highlighted features */}
@@ -473,7 +473,7 @@ function FAQSection() {
     {
       question: "What is SmartP2PCircle and Who Owns it?",
       answer:
-          "SmartP2PCircle (SPC) is a fully decentralised, peer-to-peer (P2P) Web3 ecosystem built on smart contract technology. It operates transparently on the blockchain and is entirely owned and controlled by its members.",
+          "SmartP2PCircle (SPC) is a fully decentralised, peer-to-peer (P2P) Web3 ecosystem built on BLOCKCHAIN TECHNOLOGY technology. It operates transparently on the blockchain and is entirely owned and controlled by its members.",
     },
     {
       question: "Is the SPC platform secure and scam-proof?",
