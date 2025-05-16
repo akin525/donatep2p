@@ -14,7 +14,7 @@ export default function MobileMenu() {
   const [open, setOpen] = useState(false);
 
   const menuItems = [
-    { to: "/signup", label: "Sign Up" },
+    { to: "/register", label: "Sign Up" },
     { to: "/login", label: "Sign In" },
   ];
 
